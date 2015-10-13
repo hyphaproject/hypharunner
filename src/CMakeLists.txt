@@ -30,7 +30,8 @@ file (GLOB Sources "controller/*.cpp" "network/*.cpp"
 file (GLOB Headers "*.h" "controller/*.h" "network/*.h"
         "plugin/*.h" "handler/*.h")
 
-set(hypharunnerlibs ${Hypha_LIBRARIES} HyphaUtils HyphaCore HyphaHandler HyphaPlugin
+set(hypharunnerlibs ${Hypha_LIBRARIES}
+# HyphaUtils HyphaCore HyphaHandler HyphaPlugin
      ${Boost_LIBRARIES} ${Poco_LIBRARIES} PocoNet PocoUtil PocoFoundation PocoData PocoMySQL)
 
 add_executable(hypharunner "hypharunner.cpp" ${Sources} ${Headers})
