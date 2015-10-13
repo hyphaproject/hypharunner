@@ -17,6 +17,6 @@ QT5_ADD_RESOURCES (ResourceSources ${Resources})
 
 add_library( dooropener SHARED ${Sources} ${Headers} ${ResourceSources})
 
-target_link_libraries(dooropener ${Hypha_LIBRARIES} Qt5::Core HyphaUtils)
+target_link_libraries(dooropener ${Hypha_LIBRARIES} Qt5::Core)
 
 INSTALL(TARGETS dooropener DESTINATION hypha/plugins)
