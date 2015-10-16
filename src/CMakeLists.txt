@@ -39,10 +39,6 @@ add_executable(hypharunner "hypharunner.cpp" ${Sources} ${Headers})
 target_link_libraries(hypharunner ${hypharunnerlibs})
 
 INSTALL(TARGETS hypharunner DESTINATION hypharunner/bin)
-SET(CPACK_GENERATOR "DEB")
-SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Christian M")
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "mysql-client, qt5-default, libpoco-dev, libopencv-dev, libldap2-dev")
-INCLUDE(CPack)
 
 add_subdirectory( handlers )
 add_subdirectory( plugins )
