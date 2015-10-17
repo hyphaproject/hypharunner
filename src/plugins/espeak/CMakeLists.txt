@@ -11,11 +11,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories (../../)
 file (GLOB Sources "*.cpp")
 file (GLOB Headers "*.h")
-file (GLOB Resources *.qrc)
 
-QT5_ADD_RESOURCES (ResourceSources ${Resources})
-
-add_library( espeak SHARED ${Sources} ${Headers} ${ResourceSources})
+add_library( espeak SHARED ${Sources} ${Headers})
 
 target_link_libraries(espeak ${Hypha_LIBRARIES} Qt5::Core)
 INSTALL(TARGETS espeak DESTINATION hypha/plugins)

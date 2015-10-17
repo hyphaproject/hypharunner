@@ -1,7 +1,6 @@
-
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <QtCore/QProcess>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
 #include <Poco/ClassLibrary.h>
 #include <hypha/plugin/hyphaplugin.h>
 #include "espeak.h"
@@ -38,16 +37,14 @@ HyphaPlugin *ESpeak::getInstance(std::string id) {
 }
 
 void ESpeak::receiveMessage(std::string message) {
-    QJsonDocument document = QJsonDocument::fromJson(message.c_str());
-    QJsonObject object = document.object();
-
-    if(object.contains("language")) {
-        language = object.value("language").toString().toStdString();
+    boost::property_tree::ptree pt;
+    std::stringstream ss(message);
+    boost::property_tree::read_json(ss, pt);
+    if(pt.get_optional<std::string>("language")) {
+        language = pt.get<std::string>("language");
     }
-
-    if(object.contains("say")) {
-        std::string say = object.value("say").toString().toStdString();
-
+    if(pt.get_optional<std::string>("say")) {
+        std::string say = pt.get<std::string>("say");
         QProcess process;
         QStringList arguments;
         arguments << "-a 200";

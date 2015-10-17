@@ -1,7 +1,6 @@
 
-#include <QtCore/QProcess>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <Poco/Net/MailMessage.h>
 #include <Poco/Net/MailRecipient.h>
 #include <Poco/Net/SMTPClientSession.h>
@@ -27,22 +26,23 @@ std::string EMail::communicate(std::string message) {
 }
 
 void EMail::loadConfig(std::string json) {
-    QJsonDocument document = QJsonDocument::fromJson(QString::fromStdString(json).toUtf8());
-    QJsonObject object = document.object();
-    if(object.contains("user")) {
-        user = object.value("user").toString().toStdString();
+    boost::property_tree::ptree pt;
+    std::stringstream ss(json);
+    boost::property_tree::read_json(ss, pt);
+    if(pt.get_optional<std::string>("user")) {
+        user = pt.get<std::string>("user");
     }
-    if(object.contains("host")) {
-        host = object.value("host").toString().toStdString();
+    if(pt.get_optional<std::string>("host")) {
+        host = pt.get<std::string>("host");
     }
-    if(object.contains("port")) {
-        port = object.value("port").toInt();
+    if(pt.get_optional<int>("port")) {
+        port = pt.get<int>("port");
     }
-    if(object.contains("password")) {
-        password = object.value("password").toString().toStdString();
+    if(pt.get_optional<std::string>("password")) {
+        password = pt.get<std::string>("password");
     }
-    if(object.contains("recipient")) {
-        recipient = object.value("recipient").toString().toStdString();
+    if(pt.get_optional<std::string>("recipient")) {
+        recipient = pt.get<std::string>("recipient");
     }
 }
 
@@ -57,12 +57,12 @@ HyphaPlugin *EMail::getInstance(std::string id) {
 }
 
 void EMail::receiveMessage(std::string message) {
-    QJsonDocument document = QJsonDocument::fromJson(message.c_str());
-    QJsonObject object = document.object();
-
-    if(object.contains("mail")) {
-        std::string message = object.value("mail").toString().toStdString();
-        sendMail(message);
+    boost::property_tree::ptree pt;
+    std::stringstream ss(message);
+    boost::property_tree::read_json(ss, pt);
+    if(pt.get_optional<std::string>("mail")) {
+        std::string mail = pt.get<std::string>("mail");
+        sendMail(mail);
     }
 }
 

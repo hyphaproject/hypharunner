@@ -9,6 +9,7 @@ find_package(Hypha COMPONENTS Utils Core Handler Plugin REQUIRED)
 #find_package(Poco REQUIRED)
 find_library(POCO_DATA PocoData)
 find_library(POCO_MYSQL PocoMySQL)
+find_library(POCO_SQLITE PocoSQLite)
 find_library(POCO_NET PocoNet)
 find_library(POCO_UTIL PocoUtil)
 find_library(POCO_FOUNDATION PocoFoundation)
@@ -32,7 +33,7 @@ file (GLOB Headers "*.h" "controller/*.h" "network/*.h"
 
 set(hypharunnerlibs ${Hypha_LIBRARIES}
 # HyphaUtils HyphaCore HyphaHandler HyphaPlugin
-     ${Boost_LIBRARIES} ${Poco_LIBRARIES} PocoNet PocoUtil PocoFoundation PocoData PocoMySQL)
+     ${Boost_LIBRARIES} ${Poco_LIBRARIES} PocoNet PocoUtil PocoFoundation PocoData PocoMySQL PocoSQLite)
 
 add_executable(hypharunner "hypharunner.cpp" ${Sources} ${Headers})
 
