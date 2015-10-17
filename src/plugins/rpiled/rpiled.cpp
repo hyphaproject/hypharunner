@@ -7,7 +7,7 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <Poco/ClassLibrary.h>
-#include <hypha/plugin/eitplugin.h>
+#include <hypha/plugin/hyphaplugin.h>
 #include <hypha/utils/logger.h>
 #include "rpiled.h"
 #include <QDebug>

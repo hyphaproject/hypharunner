@@ -1,6 +1,6 @@
 #ifndef FLAME_H
 #define FLAME_H
-#include <hypha/plugin/eitplugin.h>
+#include <hypha/plugin/hyphaplugin.h>
 #include <mutex>
 namespace hypha {
 namespace plugin {

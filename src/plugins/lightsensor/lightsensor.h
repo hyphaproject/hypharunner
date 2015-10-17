@@ -1,6 +1,6 @@
 #ifndef LIGHTSENSOR_H
 #define LIGHTSENSOR_H
-#include <hypha/plugin/eitplugin.h>
+#include <hypha/plugin/hyphaplugin.h>
 #include <mutex>
 namespace hypha {
 namespace plugin {

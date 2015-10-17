@@ -1,7 +1,7 @@
 #ifndef RPIANALOGSENSOR_H
 #define RPIANALOGSENSOR_H
 #include <mutex>
-#include <hypha/plugin/eitplugin.h>
+#include <hypha/plugin/hyphaplugin.h>
 namespace hypha {
 namespace plugin {
 namespace rpianalogsensor {
