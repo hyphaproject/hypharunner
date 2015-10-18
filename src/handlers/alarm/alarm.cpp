@@ -1,10 +1,5 @@
-#include <QtCore/QMutex>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
-#include <QtCore/QJsonArray>
-#include <QtCore/QDateTime>
-#include <QtCore/QDebug>
-#include <QtCore/QDateTime>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <thread>
 #include <chrono>
 #include <string>
@@ -34,8 +29,6 @@ void Alarm::doWork() {
 }
 
 void Alarm::parse(std::string message) {
-    QJsonDocument document = QJsonDocument::fromJson(QString::fromStdString(message).toUtf8());
-    QJsonObject object = document.object();
 }
 
 void Alarm::loadConfig(std::string config) {
@@ -52,33 +45,40 @@ HyphaHandler *Alarm::getInstance(std::string id) {
 }
 
 void Alarm::receiveMessage(std::string message) {
-    QJsonDocument document = QJsonDocument::fromJson(message.c_str());
-    QJsonObject object = document.object();
-    QJsonObject sendobject;
-    if(object.contains("movement")) {
-        sendobject["mail"] = "movement";
+    boost::property_tree::ptree ptjson;
+    std::stringstream ssjson(message);
+    boost::property_tree::read_json(ssjson, ptjson);
+
+    boost::property_tree::ptree sendobject;
+
+    if(ptjson.get_optional<bool>("movement")) {
+        std::string mail = "movement";
+        sendobject.put("mail", mail);
     }
 
-    if(object.contains("alarm")) {
-        std::string id = object["id"].toString().toStdString();
-        bool isAlarm = object.value("alarm").toBool();
+    if(ptjson.get_optional<bool>("alarm")) {
+        std::string id = ptjson.get<std::string>("id");
+        bool isAlarm = ptjson.get<bool>("alarm");
         if(alarm.find(id) == alarm.end()) {
             alarm[id] = isAlarm;
         } else if(alarm[id] != isAlarm) {
             alarm[id] = isAlarm;
             std::string value;
-            if(object["value"].isBool()) {
-                value = object["value"].toBool()?"true":"false";
-            } else if(object["value"].isDouble()) {
+            if(ptjson.get_optional<bool>("value")) {
+                value = ptjson.get<bool>("value")?"true":"false";
+            } else if(ptjson.get_optional<double>("value")) {
                 std::stringstream tostring;
-                tostring << object["value"].toDouble();
+                tostring << ptjson.get<double>("value");
                 value = tostring.str();
             } else {
-                value = object["value"].toString().toStdString();
+                value = ptjson.get<std::string>("value");
             }
-            sendobject["mail"] = object["id"].toString()+"("+object["type"].toString()+") " + QString::fromStdString(value);
-            QJsonDocument senddocument(sendobject);
-            sendMessage(QString(senddocument.toJson()).toStdString());
+            sendobject.put("mail", ptjson.get<std::string>("id")+"("
+                           +ptjson.get<std::string>("type")+") " + value);
+
+            std::stringstream ssso;
+            boost::property_tree::write_json(ssso, sendobject);
+            sendMessage(ssso.str());
         }
     }
 }
