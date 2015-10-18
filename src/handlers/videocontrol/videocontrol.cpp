@@ -1,12 +1,7 @@
-#include <QtCore/QMutex>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
-#include <QtCore/QJsonArray>
-#include <QtCore/QDateTime>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <thread>
 #include <chrono>
-#include <QtCore/QDebug>
-#include <QtCore/QDateTime>
 #include <Poco/ClassLibrary.h>
 #include <hypha/plugin/hyphaplugin.h>
 #include <hypha/plugin/pluginloader.h>
@@ -42,10 +37,12 @@ void VideoControl::parse(std::string message) {
 }
 
 void VideoControl::loadConfig(std::string config) {
-    QJsonDocument document = QJsonDocument::fromJson(QString::fromStdString(config).toUtf8());
-    QJsonObject object = document.object();
-    if(object.contains("savedir")) {
-        saveDir = object.value("savedir").toString().toStdString();
+    boost::property_tree::ptree ptconfig;
+    std::stringstream ssconfig(config);
+    boost::property_tree::read_json(ssconfig, ptconfig);
+
+    if(ptconfig.get_optional<std::string>("savedir")) {
+        saveDir = ptconfig.get<std::string>("savedir");
     }
 }
 
@@ -60,9 +57,11 @@ HyphaHandler *VideoControl::getInstance(std::string id) {
 }
 
 void VideoControl::receiveMessage(std::string message) {
-    QJsonDocument document = QJsonDocument::fromJson(message.c_str());
-    QJsonObject object = document.object();
-    if(object.contains("movement") && object.value("movement").toBool() == true) {
+    boost::property_tree::ptree ptjson;
+    std::stringstream ssjson(message);
+    boost::property_tree::read_json(ssjson, ptjson);
+
+    if(ptjson.get_optional<bool>("movement") && ptjson.get_optional<bool>("movement") == true){
         timer_mutex.lock();
         if(timer > 0) {
             if(startThread){
