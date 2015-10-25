@@ -30,34 +30,32 @@ bool LocalConnection::disconnect() {
     return false;
 }
 
-void LocalConnection::handlerMessage(std::string message)
-{
-    try{
-        if(handlerThread){
+void LocalConnection::handlerMessage(std::string message) {
+    try {
+        if(handlerThread) {
             if(handlerThread->joinable())
                 handlerThread->join();
             delete handlerThread;
         }
-        handlerThread = new std::thread([this, message]{this->plugin->receiveMessage(message); });
-    }catch( std::exception &e){
+        handlerThread = new std::thread([this, message] {this->plugin->receiveMessage(message); });
+    } catch( std::exception &e) {
         hypha::utils::Logger::error(e.what());
-    }catch( ... ){
+    } catch( ... ) {
         hypha::utils::Logger::error("Error in " + plugin->getId() + " receiveMessage part.");
     }
 }
 
-void LocalConnection::pluginMessage(std::string message)
-{
-    try{
-        if(pluginThread){
+void LocalConnection::pluginMessage(std::string message) {
+    try {
+        if(pluginThread) {
             if(pluginThread->joinable())
                 pluginThread->join();
             delete pluginThread;
         }
-        pluginThread = new std::thread([this, message]{this->handler->receiveMessage(message); });
-    }catch( std::exception &e){
+        pluginThread = new std::thread([this, message] {this->handler->receiveMessage(message); });
+    } catch( std::exception &e) {
         hypha::utils::Logger::error(e.what());
-    }catch( ... ){
+    } catch( ... ) {
         hypha::utils::Logger::error("Error in " + handler->getId() + " receiveMessage part.");
     }
 }

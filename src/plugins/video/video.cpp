@@ -45,22 +45,22 @@ void Video::doWork() {
 }
 
 void Video::captureCameras() {
-	if(getFilmState() == FILM){
-		if(filmCounter ++ >= 100)
-			setFilmState(IDLE);
-    try {
-        std::thread t[MAXCAMERAS];
-        for(int i = 0; i < MAXCAMERAS; ++i) {
-            t[i] = std::thread( [this,i] { captureCamera(i); });
+    if(getFilmState() == FILM) {
+        if(filmCounter ++ >= 100)
+            setFilmState(IDLE);
+        try {
+            std::thread t[MAXCAMERAS];
+            for(int i = 0; i < MAXCAMERAS; ++i) {
+                t[i] = std::thread( [this,i] { captureCamera(i); });
+            }
+            for(int i = 0; i < MAXCAMERAS; ++i) {
+                t[i].join();
+            }
+        } catch(std::exception &e) {
+            Logger::warning("Capture Cameras Threads");
+            Logger::warning(e.what());
         }
-        for(int i = 0; i < MAXCAMERAS; ++i) {
-            t[i].join();
-        }
-    } catch(std::exception &e) {
-        Logger::warning("Capture Cameras Threads");
-        Logger::warning(e.what());
     }
-	}
 
 }
 
@@ -176,13 +176,13 @@ void Video::drawText() {
 }
 
 void Video::writeVideo() {
-    switch(getState()){
+    switch(getState()) {
     case IDLE:
         if(videoWriter)
             stopVideoCapture();
         break;
     case RECORDING:
-        if(!videoWriter){
+        if(!videoWriter) {
             startVideoCapture();
         }
         if(videoWriter_mutex.try_lock()) {
@@ -313,8 +313,8 @@ void Video::setup() {
             cameras ++;
         }
     }
-	filmCounter = 0;
-	filmState = FILM;
+    filmCounter = 0;
+    filmState = FILM;
     srv = new StreamServer();
     srv->setVideo(this);
     srv->setPort(port);
@@ -373,7 +373,7 @@ HyphaPlugin *Video::getInstance(std::string id) {
 }
 
 void Video::receiveMessage(std::string message) {
-    try{
+    try {
         boost::property_tree::ptree pt;
         std::stringstream ss(message);
         boost::property_tree::read_json(ss, pt);
@@ -385,7 +385,7 @@ void Video::receiveMessage(std::string message) {
                 setState(IDLE);
             }
         }
-    } catch(std::exception &e){
+    } catch(std::exception &e) {
         Logger::error(e.what());
     }
 }
@@ -430,8 +430,8 @@ void Video::stopVideoCapture() {
 }
 
 cv::Mat Video::getCurrentImage() {
-    	setFilmState(FILM);
-	cv::Mat frame;
+    setFilmState(FILM);
+    cv::Mat frame;
     currentImage_mutex.lock();
     frame = currentImage.clone();
     currentImage_mutex.unlock();
@@ -454,56 +454,56 @@ std::string Video::getPassword() {
     return returnStr;
 }
 
-Video::State Video::getState(){
+Video::State Video::getState() {
     State state = IDLE;
     state_mutex.lock();
-        state = currentState;
+    state = currentState;
     state_mutex.unlock();
     return state;
 }
 
-void Video::setState(State state){
+void Video::setState(State state) {
     state_mutex.lock();
-            currentState = state;
+    currentState = state;
     state_mutex.unlock();
 }
 
-Video::State Video::getFilmState(){
-	State state = IDLE;
-	state_mutex.lock();
-		state = filmState;
-	state_mutex.unlock();
-	return state;
+Video::State Video::getFilmState() {
+    State state = IDLE;
+    state_mutex.lock();
+    state = filmState;
+    state_mutex.unlock();
+    return state;
 }
 
-void Video::setFilmState(State state){
-	state_mutex.lock();
-		if(filmState == IDLE && state == FILM){
-		    filmState = FILM;
-		    cameras = 0;
-		    for(int i = 0; i < MAXCAMERAS; ++i) {
-        		if(!device[i].empty()) {
-            			capture[i].open(std::stoi(device[i]));
-            			capture[i].set(CV_CAP_PROP_FRAME_WIDTH, width);
-            			capture[i].set(CV_CAP_PROP_FRAME_HEIGHT, height);
-            			capture[i].set(CV_CAP_PROP_FPS, fps);
-            			cameras ++;
-        		}
-    		    }
-		}else if(filmState == FILM && state == IDLE){
-		    filmState = IDLE;
-		    for(int i = 0; i < MAXCAMERAS; ++i) {
-                    	if(!device[i].empty()) {
-                            capture[i].release();
-                    	}
-			cameras = 0;
-                    }
-		}
-		filmCounter = 0;
-	state_mutex.unlock();
+void Video::setFilmState(State state) {
+    state_mutex.lock();
+    if(filmState == IDLE && state == FILM) {
+        filmState = FILM;
+        cameras = 0;
+        for(int i = 0; i < MAXCAMERAS; ++i) {
+            if(!device[i].empty()) {
+                capture[i].open(std::stoi(device[i]));
+                capture[i].set(CV_CAP_PROP_FRAME_WIDTH, width);
+                capture[i].set(CV_CAP_PROP_FRAME_HEIGHT, height);
+                capture[i].set(CV_CAP_PROP_FPS, fps);
+                cameras ++;
+            }
+        }
+    } else if(filmState == FILM && state == IDLE) {
+        filmState = IDLE;
+        for(int i = 0; i < MAXCAMERAS; ++i) {
+            if(!device[i].empty()) {
+                capture[i].release();
+            }
+            cameras = 0;
+        }
+    }
+    filmCounter = 0;
+    state_mutex.unlock();
 }
 
-std::string Video::getFileName(){
+std::string Video::getFileName() {
     std::string filename;
     fileName_mutex.lock();
     filename = fileName;
@@ -511,7 +511,7 @@ std::string Video::getFileName(){
     return filename;
 }
 
-void Video::setFileName(std::string filename){
+void Video::setFileName(std::string filename) {
     if(!filename.empty())
         filename = filename + "/";
     Poco::DateTime now;
@@ -525,7 +525,7 @@ void Video::setFileName(std::string filename){
     time = Poco::DateTimeFormatter::format(now, "%Y%m%d_%H%M%S");
     filename = filename + "capture_" + time;
     fileName_mutex.lock();
-        fileName = filename;
+    fileName = filename;
     fileName_mutex.unlock();
 }
 

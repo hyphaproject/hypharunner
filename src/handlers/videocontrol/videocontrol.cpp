@@ -61,10 +61,10 @@ void VideoControl::receiveMessage(std::string message) {
     std::stringstream ssjson(message);
     boost::property_tree::read_json(ssjson, ptjson);
 
-    if(ptjson.get_optional<bool>("movement") && ptjson.get_optional<bool>("movement") == true){
+    if(ptjson.get_optional<bool>("movement") && ptjson.get_optional<bool>("movement") == true) {
         timer_mutex.lock();
         if(timer > 0) {
-            if(startThread){
+            if(startThread) {
                 if(startThread->joinable())
                     startThread->join();
                 delete startThread;
