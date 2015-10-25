@@ -4,14 +4,14 @@ RequestHandlerFactory::RequestHandlerFactory() {
 }
 
 Poco::Net::HTTPRequestHandler *RequestHandlerFactory::createRequestHandler(const Poco::Net::HTTPServerRequest &request) {
-    if (boost::starts_with(request.getURI(), "/stream/")) {
-        StreamHandler *sh = new StreamHandler();
-        sh->setVideo(video);
-        return sh;
-    } else
-        return new RootHandler();
+  if (boost::starts_with(request.getURI(), "/stream/")) {
+    StreamHandler *sh = new StreamHandler();
+    sh->setVideo(video);
+    return sh;
+  } else
+    return new RootHandler();
 }
 
 void RequestHandlerFactory::setVideo(Video *video) {
-    this->video = video;
+  this->video = video;
 }

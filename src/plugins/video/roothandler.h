@@ -9,9 +9,9 @@ namespace video {
 
 
 class RootHandler: public Poco::Net::HTTPRequestHandler {
-  public:
-    void handleRequest(Poco::Net::HTTPServerRequest& request,
-                       Poco::Net::HTTPServerResponse& response);
+ public:
+  void handleRequest(Poco::Net::HTTPServerRequest &request,
+                     Poco::Net::HTTPServerResponse &response);
 };
 }
 }

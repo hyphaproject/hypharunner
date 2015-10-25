@@ -5,11 +5,11 @@
 #include <Poco/Net/HTTPServerRequest.h>
 
 class RequestHandlerFactory: public Poco::Net::HTTPRequestHandlerFactory {
-  public:
-    RequestHandlerFactory();
+ public:
+  RequestHandlerFactory();
 
-    Poco::Net::HTTPRequestHandler* createRequestHandler(
-        const Poco::Net::HTTPServerRequest& request);
+  Poco::Net::HTTPRequestHandler *createRequestHandler(
+    const Poco::Net::HTTPServerRequest &request);
 };
 
 #endif // REQUESTHANDLERFACTORY_H

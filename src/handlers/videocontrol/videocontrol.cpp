@@ -23,13 +23,13 @@ VideoControl::~VideoControl() {
 }
 
 void VideoControl::doWork() {
-    std::this_thread::sleep_for(std::chrono::seconds(1));
-    timer_mutex.lock();
-    timer ++;
-    if(timer == 0) {
-        stopVideoCapture();
-    }
-    timer_mutex.unlock();
+  std::this_thread::sleep_for(std::chrono::seconds(1));
+  timer_mutex.lock();
+  timer ++;
+  if (timer == 0) {
+    stopVideoCapture();
+  }
+  timer_mutex.unlock();
 }
 
 
@@ -37,55 +37,55 @@ void VideoControl::parse(std::string message) {
 }
 
 void VideoControl::loadConfig(std::string config) {
-    boost::property_tree::ptree ptconfig;
-    std::stringstream ssconfig(config);
-    boost::property_tree::read_json(ssconfig, ptconfig);
+  boost::property_tree::ptree ptconfig;
+  std::stringstream ssconfig(config);
+  boost::property_tree::read_json(ssconfig, ptconfig);
 
-    if(ptconfig.get_optional<std::string>("savedir")) {
-        saveDir = ptconfig.get<std::string>("savedir");
-    }
+  if (ptconfig.get_optional<std::string>("savedir")) {
+    saveDir = ptconfig.get<std::string>("savedir");
+  }
 }
 
 std::string VideoControl::getConfig() {
-    return "{\"savedir\":\""+saveDir+"\"}";
+  return "{\"savedir\":\"" + saveDir + "\"}";
 }
 
 HyphaHandler *VideoControl::getInstance(std::string id) {
-    VideoControl *instance = new VideoControl();
-    instance->setId(id);
-    return instance;
+  VideoControl *instance = new VideoControl();
+  instance->setId(id);
+  return instance;
 }
 
 void VideoControl::receiveMessage(std::string message) {
-    boost::property_tree::ptree ptjson;
-    std::stringstream ssjson(message);
-    boost::property_tree::read_json(ssjson, ptjson);
+  boost::property_tree::ptree ptjson;
+  std::stringstream ssjson(message);
+  boost::property_tree::read_json(ssjson, ptjson);
 
-    if(ptjson.get_optional<bool>("movement") && ptjson.get_optional<bool>("movement") == true) {
-        timer_mutex.lock();
-        if(timer > 0) {
-            if(startThread) {
-                if(startThread->joinable())
-                    startThread->join();
-                delete startThread;
-            }
-            startThread = new std::thread( [this] { startVideoCapture(); });
-        }
-        timer = -10;
-        timer_mutex.unlock();
+  if (ptjson.get_optional<bool>("movement") && ptjson.get_optional<bool>("movement") == true) {
+    timer_mutex.lock();
+    if (timer > 0) {
+      if (startThread) {
+        if (startThread->joinable())
+          startThread->join();
+        delete startThread;
+      }
+      startThread = new std::thread( [this] { startVideoCapture(); });
     }
+    timer = -10;
+    timer_mutex.unlock();
+  }
 }
 
 std::string VideoControl::communicate(std::string message) {
-    return "";
+  return "";
 }
 
 void VideoControl::startVideoCapture() {
-    sendMessage("{\"videocapture\":true, \"savedir\":\"" + saveDir + "\"}");
+  sendMessage("{\"videocapture\":true, \"savedir\":\"" + saveDir + "\"}");
 }
 
 void VideoControl::stopVideoCapture() {
-    sendMessage("{\"videocapture\":false}");
+  sendMessage("{\"videocapture\":false}");
 }
 
 POCO_BEGIN_MANIFEST(HyphaHandler)
