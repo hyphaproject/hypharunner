@@ -11,22 +11,22 @@ using namespace hypha::plugin;
 using namespace hypha::plugin::wifi;
 
 void Wifi::doWork() {
-  std::this_thread::sleep_for(std::chrono::seconds(1));
-  qDebug("wifi ..");
-  QProcess process;
-  process.start("sh", QStringList() << "-c" << "arp-scan --localnet --interface=wlan0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'");
-  process.waitForFinished();
-  QString output(process.readAllStandardOutput());
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    qDebug("wifi ..");
+    QProcess process;
+    process.start("sh", QStringList() << "-c" << "arp-scan --localnet --interface=wlan0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'");
+    process.waitForFinished();
+    QString output(process.readAllStandardOutput());
 
-  // output to json string
-  QJsonDocument document;
-  QJsonArray devices = QJsonArray::fromStringList(output.split("\n"));
-  QJsonObject object;
-  object.insert("source", QJsonValue(QString::fromStdString(getId())));
-  object.insert("devices", devices);
-  object.insert("devicetype", QJsonValue("wifi"));
-  document.setObject(object);
-  sendMessage(document.toJson().data());
+    // output to json string
+    QJsonDocument document;
+    QJsonArray devices = QJsonArray::fromStringList(output.split("\n"));
+    QJsonObject object;
+    object.insert("source", QJsonValue(QString::fromStdString(getId())));
+    object.insert("devices", devices);
+    object.insert("devicetype", QJsonValue("wifi"));
+    document.setObject(object);
+    sendMessage(document.toJson().data());
 }
 
 void Wifi::setup() {
@@ -34,7 +34,7 @@ void Wifi::setup() {
 }
 
 std::string Wifi::communicate(std::string message) {
-  return "";
+    return "";
 }
 
 void Wifi::loadConfig(std::string json) {
@@ -42,13 +42,13 @@ void Wifi::loadConfig(std::string json) {
 }
 
 std::string Wifi::getConfig() {
-  return "{}";
+    return "{}";
 }
 
 HyphaPlugin *Wifi::getInstance(std::string id) {
-  Wifi *instance = new Wifi();
-  instance->setId(id);
-  return instance;
+    Wifi *instance = new Wifi();
+    instance->setId(id);
+    return instance;
 }
 
 void Wifi::receiveMessage(std::string message) {

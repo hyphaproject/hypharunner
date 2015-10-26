@@ -9,12 +9,12 @@ namespace plugin {
 namespace video {
 class Video;
 class StreamHandler: public Poco::Net::HTTPRequestHandler {
- public:
-  void handleRequest(Poco::Net::HTTPServerRequest &request,
-                     Poco::Net::HTTPServerResponse &response);
-  void setVideo(Video *video);
- protected:
-  Video *video;
+  public:
+    void handleRequest(Poco::Net::HTTPServerRequest &request,
+                       Poco::Net::HTTPServerResponse &response);
+    void setVideo(Video *video);
+  protected:
+    Video *video;
 };
 }
 }

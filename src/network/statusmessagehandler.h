@@ -6,9 +6,9 @@
 #include "Poco/Net/HTTPServerResponse.h"
 
 class StatusMessageHandler: public Poco::Net::HTTPRequestHandler {
- public:
-  void handleRequest(Poco::Net::HTTPServerRequest &request,
-                     Poco::Net::HTTPServerResponse &response);
+  public:
+    void handleRequest(Poco::Net::HTTPServerRequest &request,
+                       Poco::Net::HTTPServerResponse &response);
 };
 
 #endif // STATUSMESSAGEHANDLER_H

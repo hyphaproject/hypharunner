@@ -2,8 +2,8 @@
 #define HANDLERSERVER_H
 
 class HandlerServer {
- public:
-  HandlerServer();
+  public:
+    HandlerServer();
 };
 
 #endif // HANDLERSERVER_H

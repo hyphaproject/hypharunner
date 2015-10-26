@@ -2,19 +2,19 @@
 #define CONTROLLER_H
 
 class Controller {
- public:
-  static Controller *instance();
-  void loadHandler();
-  void loadPlugins();
-  void createConnections();
+  public:
+    static Controller *instance();
+    void loadHandler();
+    void loadPlugins();
+    void createConnections();
 
-  void startThreads();
+    void startThreads();
 
- private:
-  explicit Controller();
-  ~Controller();
+  private:
+    explicit Controller();
+    ~Controller();
 
-  static Controller *singleton;
+    static Controller *singleton;
 };
 
 #endif // CONTROLLER_H

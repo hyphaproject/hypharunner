@@ -10,16 +10,16 @@ namespace plugin {
 namespace video {
 class Video;
 class RequestHandlerFactory: public Poco::Net::HTTPRequestHandlerFactory {
- public:
-  RequestHandlerFactory();
+  public:
+    RequestHandlerFactory();
 
-  Poco::Net::HTTPRequestHandler *createRequestHandler(
-    const Poco::Net::HTTPServerRequest &request);
+    Poco::Net::HTTPRequestHandler *createRequestHandler(
+        const Poco::Net::HTTPServerRequest &request);
 
 
-  void setVideo(Video *video);
- protected:
-  Video *video;
+    void setVideo(Video *video);
+  protected:
+    Video *video;
 };
 }
 }

@@ -13,16 +13,16 @@ RequestHandlerFactory::RequestHandlerFactory() {
 }
 
 Poco::Net::HTTPRequestHandler *RequestHandlerFactory::createRequestHandler(
-  const Poco::Net::HTTPServerRequest &request) {
-  Logger::info(request.getURI());
-  if (boost::starts_with(request.getURI(), "/info/"))
-    return new InfoHandler();
-  else if (boost::starts_with(request.getURI(), "/send/"))
-    return new SendHandler();
-  else if (boost::starts_with(request.getURI(), "/communicate/"))
-    return new CommunicateHandler();
-  else if (boost::starts_with(request.getURI(), "/statusmessage/"))
-    return new StatusMessageHandler();
-  else
-    return new RootHandler();
+    const Poco::Net::HTTPServerRequest &request) {
+    Logger::info(request.getURI());
+    if (boost::starts_with(request.getURI(), "/info/"))
+        return new InfoHandler();
+    else if (boost::starts_with(request.getURI(), "/send/"))
+        return new SendHandler();
+    else if (boost::starts_with(request.getURI(), "/communicate/"))
+        return new CommunicateHandler();
+    else if (boost::starts_with(request.getURI(), "/statusmessage/"))
+        return new StatusMessageHandler();
+    else
+        return new RootHandler();
 }

@@ -12,14 +12,14 @@ using namespace hypha::plugin;
 using namespace hypha::plugin::rpigpio;
 
 void RpiGpio::doWork() {
-  std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 void RpiGpio::setup() {
 }
 
 std::string RpiGpio::communicate(std::string message) {
-  return getStatusMessage();
+    return getStatusMessage();
 }
 
 void RpiGpio::loadConfig(std::string json) {
@@ -27,20 +27,20 @@ void RpiGpio::loadConfig(std::string json) {
 }
 
 std::string RpiGpio::getConfig() {
-  return "{}";
+    return "{}";
 }
 
 hypha::plugin::HyphaPlugin *RpiGpio::getInstance(std::string id) {
-  RpiGpio *instance = new RpiGpio();
-  instance->setId(id);
-  return instance;
+    RpiGpio *instance = new RpiGpio();
+    instance->setId(id);
+    return instance;
 }
 
 void RpiGpio::receiveMessage(std::string message) {
-  QProcess process;
-  process.setProcessChannelMode(QProcess::MergedChannels);
-  process.start("python", QStringList() << "../plugins/rpigpio.py" << QString::fromStdString(message));
-  process.waitForFinished();
+    QProcess process;
+    process.setProcessChannelMode(QProcess::MergedChannels);
+    process.start("python", QStringList() << "../plugins/rpigpio.py" << QString::fromStdString(message));
+    process.waitForFinished();
 }
 
 POCO_BEGIN_MANIFEST(HyphaPlugin)
