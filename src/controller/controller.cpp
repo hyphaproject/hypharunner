@@ -45,7 +45,7 @@ void Controller::loadPlugins() {
 
 void Controller::createConnections() {
     Poco::Data::Statement statement = Database::instance()->getStatement();
-    statement << "SELECT id,handler_id,plugin_id  FROM connection";
+    statement << "SELECT `id`,`handler_id`,`plugin_id` FROM `connection`";
     statement.execute();
     Poco::Data::RecordSet rs(statement);
     bool more = rs.moveFirst();

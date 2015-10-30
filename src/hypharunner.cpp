@@ -48,9 +48,9 @@ int HyphaRunner::main(const std::vector<std::string> &args) {
         Logger::info("Loading Database ...");
         UserDatabase::instance();
         Logger::info("Loading Handler ...");
-        HandlerLoader::instance();//->setParent(&a);
+        HandlerLoader::instance();
         Logger::info("Loading Plugins ...");
-        PluginLoader::instance();//->setParent(&a);
+        PluginLoader::instance();
         Logger::info("Init Handler ...");
         Controller::instance()->loadHandler();
         Logger::info("Init Plugins ...");

@@ -27,13 +27,16 @@ using namespace hypha::plugin;
 
 DoorOpener::DoorOpener() {
     Poco::Data::Statement statement = Database::instance()->getStatement();
-    statement << "CREATE TABLE IF NOT EXISTS dooropener_user ("
-              "id varchar(32) NOT NULL,"
-              "user varchar(128) NOT NULL,"
-              "atworktime bool NOT NULL DEFAULT 0,"
-              "PRIMARY KEY (id,user)"
-              ") DEFAULT CHARSET=utf8;";
-    statement.execute();
+    if(DatabaseSettings::instance()->getDriver() == "MySQL")
+    {
+        statement << "CREATE TABLE IF NOT EXISTS dooropener_user ("
+                  "id varchar(32) NOT NULL,"
+                  "user varchar(128) NOT NULL,"
+                  "atworktime bool NOT NULL DEFAULT 0,"
+                  "PRIMARY KEY (id,user)"
+                  ") DEFAULT CHARSET=utf8;";
+        statement.execute();
+    }
 }
 
 DoorOpener::~DoorOpener() {
