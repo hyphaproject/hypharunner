@@ -2,7 +2,8 @@ import subprocess
 
 class PythonBasePlugin:
 
-    def __init__(self):
+    def __init__(self, sendMessage):
+	self.sendMessage = sendMessage
 	text = '"init"'
         print(text+"\n\n")
         subprocess.call('espeak '+ text, shell=True)
@@ -22,10 +23,9 @@ class PythonBasePlugin:
 
     def doWork(self):
 	text = '"doWork"'
-        print(text+"\n\n")
+        #self.sendMessage(text+"\n\n")
         subprocess.call('espeak '+ text, shell=True)
         
-
     def setup(self):
 	text = '"setup"'
         print(text+"\n\n")

@@ -1,3 +1,5 @@
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <Poco/ClassLibrary.h>
 #include <hypha/plugin/hyphaplugin.h>
 #include <hypha/utils/logger.h>
@@ -11,7 +13,7 @@ using namespace hypha::plugin;
 using namespace hypha::plugin::pythonplugin;
 
 void PythonPlugin::doWork() {
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
     try {
         boost::python::object py_doWork = py_class.attr("doWork");
         if(!py_doWork.is_none())
@@ -30,11 +32,14 @@ void PythonPlugin::setup() {
 
         main = import("__main__");
         global = main.attr("__dict__");
-        result = exec_file("../plugins/pythonbaseplugin.py", global, global);
+        std::string file = "../plugins/" + pythonmodule + ".py";
+        result = exec_file(file.c_str(), global, global);
         result = exec("import sys", global, global);
         result = exec("sys.path.append(\"../plugins/\")", global, global);
-        result = exec("import pythonbaseplugin", global, global);
-        py_class = boost::python::eval("pythonbaseplugin.PythonBasePlugin()", global, global);
+        std::string importStr = "import " + pythonmodule;
+        result = exec(importStr.c_str(), global, global);
+        std::string pyClassStr = pythonmodule + "." + pythonclass + "(0)"; // boost::python::make_function(sendMessage)
+        py_class = boost::python::eval(pyClassStr.c_str(), global, global);
 
         // load config
         boost::python::object py_loadConfig = py_class.attr("loadConfig");
@@ -106,6 +111,20 @@ std::string PythonPlugin::parse_python_exception()
 }
 
 void PythonPlugin::loadConfig(std::string json) {
+    boost::property_tree::ptree pt;
+    std::stringstream ss(json);
+    boost::property_tree::read_json(ss, pt);
+    if (pt.get_optional<std::string>("pythonmodule")) {
+        pythonmodule = pt.get<std::string>("pythonmodule");
+    } else {
+        pythonmodule = "pythonbaseplugin";
+    }
+    if (pt.get_optional<std::string>("pythonclass")) {
+        pythonclass = pt.get<std::string>("pythonclass");
+    } else {
+        pythonclass = "PythonBasePlugin";
+    }
+
     this->config = json;
 }
 

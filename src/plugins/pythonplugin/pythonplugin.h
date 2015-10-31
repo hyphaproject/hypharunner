@@ -32,6 +32,8 @@ class PythonPlugin : public HyphaPlugin {
 
   protected:
     std::string config;
+    std::string pythonmodule;
+    std::string pythonclass;
     boost::python::object main;
     boost::python::object global;
     boost::python::object result;
