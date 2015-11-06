@@ -28,16 +28,19 @@ ENDIF()
 #############################################################
 # Enable packaging
 include(InstallRequiredSystemLibraries)
+set(CPACK_GENERATOR "DEB")
 set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Hypha Libraries")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Hypha Runner")
 set(CPACK_PACKAGE_VENDOR "chriamue")
 set(CPACK_PACKAGE_CONTACT "chriamue")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/README")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "/usr/local")
 set(CPACK_PACKAGE_VERSION ${VERSION})
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "mysql-client, qt5-default, libpoco-dev, libopencv-dev, libldap2-dev")
-set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE ${CPACK_PACKAGE_ARCHITECTURE})
+set(CPACK_DEBIAN_ARCHITECTURE ${CMAKE_SYSTEM_PROCESSOR})
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "mysql-client, qt5-default, libpoco-dev, \
+	libpocosqlite9, libpocomysql9, python, libopencv-dev, libldap2-dev, libboost-all-dev")
+
 set (CPACK_PACKAGE_FILE_NAME   "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
 include(CPack)
 #############################################################
