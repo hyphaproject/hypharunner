@@ -41,7 +41,7 @@ set(CPACK_DEBIAN_ARCHITECTURE ${CMAKE_SYSTEM_PROCESSOR})
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "hypha, mysql-client, qt5-default, libpoco-dev, \
 	libpocosqlite9, libpocomysql9, python, libopencv-dev, libldap2-dev, libboost-all-dev")
 
-set (CPACK_PACKAGE_FILE_NAME   "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
+set (CPACK_PACKAGE_FILE_NAME   "${CPACK_PACKAGE_NAME}_${CPACK_PACKAGE_VERSION}_${CPACK_DEBIAN_ARCHITECTURE}")
 include(CPack)
 #############################################################
 
