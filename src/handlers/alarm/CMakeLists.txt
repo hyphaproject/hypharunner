@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(hypha-plugin-alarm)
 
-find_package(Hypha COMPONENTS Utils REQUIRED)
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 ADD_DEFINITIONS(
@@ -16,6 +14,6 @@ file (GLOB Headers "*.h")
 
 add_library( alarm SHARED ${Sources} ${Headers})
 
-target_link_libraries(alarm ${Hypha_LIBRARIES})
+target_link_libraries(alarm hypha::core hypha::utils hypha::plugin hypha::handler)
 
 INSTALL(TARGETS alarm DESTINATION hypha/plugins)

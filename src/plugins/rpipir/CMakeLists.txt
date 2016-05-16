@@ -4,9 +4,6 @@ project(rpipir)
 find_file ( HAVE_WIRINGPI_H "wiringPi.h" PATHS ENV INCLUDE)
 if(HAVE_WIRINGPI_H)
 
-find_package(Hypha COMPONENTS Utils REQUIRED)
-find_package(Qt5Core)
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -19,7 +16,7 @@ QT5_ADD_RESOURCES (ResourceSources ${Resources})
 
 add_library( rpipir SHARED ${Sources} ${Headers} ${ResourceSources})
 
-target_link_libraries(rpipir ${Hypha_LIBRARIES} Qt5::Core -lwiringPi)
+target_link_libraries(rpipir hypha::core hypha::utils hypha::plugin hypha::handler Qt5::Core -lwiringPi)
 
 INSTALL(TARGETS rpipir DESTINATION hypha/plugins)
 endif(HAVE_WIRINGPI_H)

@@ -1,11 +1,12 @@
-#include <hypha/settings/handlersettings.h>
-#include <hypha/plugin/pluginloader.h>
-#include <hypha/handler/handlerloader.h>
-#include <hypha/settings/pluginsettings.h>
-#include <Poco/Net/DNS.h>
-#include <boost/shared_ptr.hpp>
 #include <functional>
 #include <memory>
+#include <Poco/Net/DNS.h>
+#include <boost/shared_ptr.hpp>
+
+#include <hypha/core/settings/handlersettings.h>
+#include <hypha/core/settings/pluginsettings.h>
+#include <hypha/plugin/pluginloader.h>
+#include <hypha/handler/handlerloader.h>
 
 #include "localconnection.h"
 #include "networkconnection.h"

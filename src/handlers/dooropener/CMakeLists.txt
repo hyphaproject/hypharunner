@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 3.0.0)
 
 project(hypha-plugin-dooropener)
 
-find_package(Hypha COMPONENTS Utils REQUIRED)
-find_package(Qt5Core)
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -17,6 +14,6 @@ QT5_ADD_RESOURCES (ResourceSources ${Resources})
 
 add_library( dooropener SHARED ${Sources} ${Headers} ${ResourceSources})
 
-target_link_libraries(dooropener ${Hypha_LIBRARIES} Qt5::Core)
+target_link_libraries(dooropener hypha::core hypha::utils hypha::plugin hypha::handler Qt5::Core)
 
 INSTALL(TARGETS dooropener DESTINATION hypha/plugins)

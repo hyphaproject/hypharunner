@@ -4,8 +4,6 @@ project(fingerprintzfm)
 
 find_file ( HAVE_FINGERPRINTZFM_H "ZFMComm.h" PATHS ENV INCLUDE AdafruitZFM )
 if(HAVE_FINGERPRINTZFM_H)
-find_package(Hypha COMPONENTS Utils REQUIRED)
-find_package(Qt5Core)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -19,6 +17,6 @@ QT5_ADD_RESOURCES (ResourceSources ${Resources})
 
 add_library( fingerprintzfm SHARED ${Sources} ${Headers} ${ResourceSources})
 
-target_link_libraries(fingerprintzfm ${Hypha_LIBRARIES} Qt5::Core)
+target_link_libraries(fingerprintzfm hypha::core hypha::utils hypha::plugin hypha::handler Qt5::Core)
 INSTALL(TARGETS fingerprintzfm DESTINATION hypha/plugins)
 endif()

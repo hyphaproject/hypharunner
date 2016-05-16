@@ -1,8 +1,9 @@
+#include <mutex>
 #include <Poco/Data/RecordSet.h>
 #include <Poco/Data/Statement.h>
-#include <mutex>
+
 #include <hypha/utils/logger.h>
-#include <hypha/database/database.h>
+#include <hypha/core/database/database.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/handler/handlerloader.h>
 #include "connection.h"

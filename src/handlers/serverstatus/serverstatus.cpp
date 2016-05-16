@@ -11,8 +11,8 @@
 #include <hypha/plugin/hyphaplugin.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/handler/handlerloader.h>
-#include <hypha/database/database.h>
-#include <hypha/database/userdatabase.h>
+#include <hypha/core/database/database.h>
+#include <hypha/core/database/userdatabase.h>
 #include <hypha/utils/logger.h>
 #include "serverstatus.h"
 

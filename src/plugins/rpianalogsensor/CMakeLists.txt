@@ -4,9 +4,6 @@ project(rpianalogsensor)
 find_file ( HAVE_WIRINGPI_H "wiringPi.h" PATHS ENV INCLUDE)
 if(HAVE_WIRINGPI_H)
 
-find_package(Hypha COMPONENTS Utils REQUIRED)
-find_package(Qt5Core)
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -19,7 +16,7 @@ QT5_ADD_RESOURCES (ResourceSources ${Resources})
 
 add_library( rpianalogsensor SHARED ${Sources} ${Headers} ${ResourceSources})
 
-target_link_libraries(rpianalogsensor ${Hypha_LIBRARIES} Qt5::Core -lwiringPi)
+target_link_libraries(rpianalogsensor hypha::core hypha::utils hypha::plugin hypha::handler Qt5::Core -lwiringPi)
 file(COPY rpianalogsensor.py DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 INSTALL(TARGETS rpianalogsensor DESTINATION hypha/plugins)
 INSTALL(FILES rpianalogsensor.py DESTINATION hypha/plugins)

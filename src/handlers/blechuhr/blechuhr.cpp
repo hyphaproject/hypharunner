@@ -1,16 +1,18 @@
+#include <thread>
+#include <chrono>
+
 #include <QtCore/QMutex>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonArray>
 #include <QtCore/QDateTime>
-#include <thread>
-#include <chrono>
 #include <QtCore/QDebug>
+
 #include <Poco/ClassLibrary.h>
 #include <hypha/plugin/hyphaplugin.h>
 #include <hypha/plugin/pluginloader.h>
-#include <hypha/database/database.h>
-#include <hypha/database/userdatabase.h>
+#include <hypha/core/database/database.h>
+#include <hypha/core/database/userdatabase.h>
 #include <hypha/utils/logger.h>
 #include "blechuhr.h"
 
@@ -63,10 +65,11 @@ void BlechUhr::parse(std::string message) {
 
 void BlechUhr::storeDevice(std::string device, std::string type) {
     Poco::Data::Statement statement = Database::instance()->getStatement();
+    std::string time = QDateTime::currentDateTime().toUTC().toString("yyyy-MM-dd hh::mm").toStdString();
     statement << "insert into deviceonline(deviceid, time, type) values(?, ?, ?);",
-              Poco::Data::use(device),
-              Poco::Data::use(QDateTime::currentDateTime().toUTC().toString("yyyy-MM-dd hh::mm").toStdString()),
-              Poco::Data::use(type);
+              Poco::Data::Keywords::use(device),
+              Poco::Data::Keywords::use(time),
+              Poco::Data::Keywords::use(type);
     statement.execute();
 }
 
@@ -120,7 +123,8 @@ void BlechUhr::giveFeedback(std::string username, std::string device) {
 int BlechUhr::countDeviceToday(std::string device) {
     int retValue = 0;
     Poco::Data::Statement statement = Database::instance()->getStatement();
-    statement << "select count(id) from deviceonline where deviceid='" + device + "' and DATE(time) = '" + QDateTime::currentDateTimeUtc().date().toString("yyyy-MM-dd").toStdString() + "'", Poco::Data::into(retValue);
+    statement << "select count(id) from deviceonline where deviceid='" + device + "' and DATE(time) = '"
+                 + QDateTime::currentDateTimeUtc().date().toString("yyyy-MM-dd").toStdString() + "'", Poco::Data::Keywords::into(retValue);
     statement.execute();
     return retValue;
 }

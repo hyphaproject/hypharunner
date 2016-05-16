@@ -16,10 +16,10 @@
 #include <sys/stat.h>
 #endif
 #include <hypha/utils/logger.h>
-#include <hypha/settings/hyphasettings.h>
-#include <hypha/settings/databasesettings.h>
-#include <hypha/database/database.h>
-#include <hypha/database/userdatabase.h>
+#include <hypha/core/settings/hyphasettings.h>
+#include <hypha/core/settings/databasesettings.h>
+#include <hypha/core/database/database.h>
+#include <hypha/core/database/userdatabase.h>
 #include <hypha/plugin/pluginloader.h>
 #include "network/tcpserver.h"
 
