@@ -12,16 +12,16 @@ class FingerPrintZFM : public HyphaPlugin {
     void doWork();
     void setup();
     std::string communicate(std::string message);
-    std::string name() {
+    const std::string name() {
         return "fingerprintzfm";
     }
-    std::string getTitle() {
+    const std::string getTitle() {
         return "FingerprintZFM";
     }
-    std::string getVersion() {
+    const std::string getVersion() {
         return "0.1";
     }
-    std::string getDescription() {
+    const std::string getDescription() {
         return "Plugin to detect fingerprint with adafruit zfm.";
     }
     void loadConfig(std::string json);
