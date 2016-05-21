@@ -5,33 +5,26 @@ namespace hypha {
 namespace plugin {
 namespace espeak {
 class ESpeak : public HyphaPlugin {
-  public:
-    void doWork();
-    void setup();
-    std::string communicate(std::string message);
-    std::string name() {
-        return "espeak";
-    }
-    std::string getTitle() {
-        return "ESpeak";
-    }
-    std::string getVersion() {
-        return "0.1";
-    }
-    std::string getDescription() {
-        return "Plugin to speak text with espeak.";
-    }
-    void loadConfig(std::string json);
-    std::string getConfig();
-    HyphaPlugin *getInstance(std::string id);
+ public:
+  void doWork();
+  void setup();
+  std::string communicate(std::string message);
+  const std::string name() { return "espeak"; }
+  const std::string getTitle() { return "ESpeak"; }
+  const std::string getVersion() { return "0.1"; }
+  const std::string getDescription() {
+    return "Plugin to speak text with espeak.";
+  }
+  void loadConfig(std::string json);
+  std::string getConfig();
+  HyphaPlugin *getInstance(std::string id);
 
-    void receiveMessage(std::string message);
+  void receiveMessage(std::string message);
 
-
-  private:
-    std::string language;
+ private:
+  std::string language;
 };
 }
 }
 }
-#endif // ESPEAK_H
+#endif  // ESPEAK_H

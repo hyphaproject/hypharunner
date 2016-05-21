@@ -92,7 +92,6 @@ void Dht11::measure() {
     uint8_t lststate = HIGH;
     uint8_t counter = 0;
     uint8_t j = 0, i;
-    float farenheit;
     for (i = 0; i < 5; i++)
         dht11_val[i] = 0;
     pinMode(DHT11PIN, OUTPUT);
@@ -122,13 +121,9 @@ void Dht11::measure() {
     }
     // verify cheksum and print the verified data
     if ((j >= 40) && (dht11_val[4] == ((dht11_val[0] + dht11_val[1] + dht11_val[2] + dht11_val[3]) & 0xFF))) {
-        farenheit = dht11_val[2] * 9. / 5. + 32;
-        //printf("Humidity = %d.%d %% Temperature = %d.%d *C (%.1f *F)\n",dht11_val[0],dht11_val[1],dht11_val[2],dht11_val[3],farenheit);
         temperature = dht11_val[2];
         humidity = dht11_val[0];
     }
-    // else
-    //   printf("Invalid Data!!\n");
     measure_mutex.unlock();
 }
 
