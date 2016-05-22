@@ -1,14 +1,20 @@
+// Copyright (c) 2015-2016 Hypha
+
 #include "videocontrol.h"
+
+#include <chrono>
+#include <thread>
+
 #include <Poco/ClassLibrary.h>
+
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
+
 #include <hypha/core/database/database.h>
 #include <hypha/core/database/userdatabase.h>
 #include <hypha/plugin/hyphaplugin.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <chrono>
-#include <thread>
 
 using namespace hypha::database;
 using namespace hypha::handler;

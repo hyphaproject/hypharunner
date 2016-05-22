@@ -1,7 +1,12 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef RPIANALOGSENSOR_H
 #define RPIANALOGSENSOR_H
-#include <hypha/plugin/hyphaplugin.h>
+
+#include <string>
 #include <mutex>
+#include <hypha/plugin/hyphaplugin.h>
+
 namespace hypha {
 namespace plugin {
 namespace rpianalogsensor {
@@ -13,9 +18,11 @@ class RpiAnalogSensor : public HyphaPlugin {
   const std::string getTitle() { return "RpiAnalogSensor"; }
   const std::string getVersion() { return "0.1"; }
   const std::string getDescription() { return "Plugin to read analog sensor"; }
-  std::string getStatusMessage();
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
+  std::string getStatusMessage();
+
   void measure();
   HyphaPlugin *getInstance(std::string id);
 

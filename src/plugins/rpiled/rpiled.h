@@ -1,6 +1,11 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef RPILED_H
 #define RPILED_H
+
+#include <string>
 #include <hypha/plugin/hyphaplugin.h>
+
 namespace hypha {
 namespace plugin {
 namespace rpiled {
@@ -14,9 +19,11 @@ class RpiLed : public HyphaPlugin {
   const std::string getDescription() {
     return "Plugin control red, yellow and green LED";
   }
-  std::string getStatusMessage();
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
+  std::string getStatusMessage();
+
   HyphaPlugin *getInstance(std::string id);
 
   void receiveMessage(std::string message);

@@ -1,15 +1,20 @@
+// Copyright (c) 2015-2016 Hypha
+
+#include "watersensor.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <wiringPi.h>
 
 #include <Poco/ClassLibrary.h>
-#include <hypha/plugin/hyphaplugin.h>
-#include <hypha/utils/logger.h>
+
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
-#include "watersensor.h"
+
+#include <hypha/plugin/hyphaplugin.h>
+#include <hypha/utils/logger.h>
 
 using namespace hypha::utils;
 using namespace hypha::plugin;

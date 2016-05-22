@@ -1,7 +1,12 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef RPIPIR_H
 #define RPIPIR_H
-#include <hypha/plugin/hyphaplugin.h>
+
+#include <string>
 #include <mutex>
+#include <hypha/plugin/hyphaplugin.h>
+
 namespace hypha {
 namespace plugin {
 namespace rpipir {
@@ -15,6 +20,7 @@ class RpiPir : public HyphaPlugin {
   const std::string getDescription() {
     return "Plugin to detect motion with a motion sensor";
   }
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
   std::string getStatusMessage();

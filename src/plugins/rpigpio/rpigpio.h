@@ -1,6 +1,11 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef RPIGPIO_H
 #define RPIGPIO_H
+
+#include <string>
 #include <hypha/plugin/hyphaplugin.h>
+
 namespace hypha {
 namespace plugin {
 namespace rpigpio {
@@ -14,6 +19,7 @@ class RpiGpio : public HyphaPlugin {
   const std::string getDescription() {
     return "Plugin to access gpio of the raspberry pi";
   }
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
   HyphaPlugin *getInstance(std::string id);

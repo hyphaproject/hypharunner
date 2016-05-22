@@ -1,16 +1,18 @@
+// Copyright (c) 2015-2016 Hypha
 
 #include "rfid.h"
-#include <Poco/ClassLibrary.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <hypha/plugin/hyphaplugin.h>
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/ioctl.h>
+#include <errno.h>
+#include <fcntl.h>
 #include <termios.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
+
+#include <Poco/ClassLibrary.h>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>

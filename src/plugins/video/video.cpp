@@ -1,23 +1,31 @@
+// Copyright (c) 2015-2016 Hypha
+
 #include "video.h"
+
+#include <cmath>
+#include <iostream>
+#include <sstream>
+#include <thread>
+#include <vector>
+
+#include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
+
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/opencv.hpp>
+
 #include <Poco/ClassLibrary.h>
 #include <Poco/DateTime.h>
 #include <Poco/DateTimeFormatter.h>
 #include <Poco/LocalDateTime.h>
 #include <Poco/Timezone.h>
+
 #include <hypha/plugin/hyphaplugin.h>
 #include <hypha/utils/logger.h>
-#include <boost/filesystem.hpp>
-#include <boost/foreach.hpp>
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <cmath>
-#include <iostream>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/opencv.hpp>
-#include <sstream>
-#include <thread>
-#include <vector>
+
 #include "streamserver.h"
 
 using namespace hypha::utils;

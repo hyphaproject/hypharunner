@@ -1,5 +1,9 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef EMAIL_H
 #define EMAIL_H
+
+#include <string>
 #include <hypha/plugin/hyphaplugin.h>
 
 namespace hypha {
@@ -14,6 +18,7 @@ class EMail : public HyphaPlugin {
   const std::string getTitle() { return "EMail"; }
   const std::string getVersion() { return "0.1"; }
   const std::string getDescription() { return "Plugin to send emails."; }
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
   HyphaPlugin *getInstance(std::string id);

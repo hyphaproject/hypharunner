@@ -1,11 +1,15 @@
+// Copyright (c) 2015-2016 Hypha
 
 #include "wifi.h"
+
 #include <Poco/ClassLibrary.h>
-#include <hypha/plugin/hyphaplugin.h>
+
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
+
+#include <hypha/plugin/hyphaplugin.h>
 
 using namespace hypha::plugin;
 using namespace hypha::plugin::wifi;

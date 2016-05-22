@@ -1,13 +1,19 @@
+// Copyright (c) 2015-2016 Hypha
+
 #include "dht11.h"
-#include <Poco/ClassLibrary.h>
-#include <hypha/plugin/hyphaplugin.h>
-#include <hypha/utils/logger.h>
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <wiringPi.h>
+
+#include <Poco/ClassLibrary.h>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
+
+#include <wiringPi.h>
+
+#include <hypha/plugin/hyphaplugin.h>
+#include <hypha/utils/logger.h>
 
 #define MAX_TIME 85
 #define DHT11PIN 7

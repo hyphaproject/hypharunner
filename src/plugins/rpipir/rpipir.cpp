@@ -1,13 +1,19 @@
+// Copyright (c) 2015-2016 Hypha
+
 #include "rpipir.h"
+
 #include <Poco/ClassLibrary.h>
-#include <hypha/plugin/hyphaplugin.h>
-#include <hypha/utils/logger.h>
-#include <wiringPi.h>
+
 #include <QtCore/QDebug>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
+
+#include <wiringPi.h>
+
+#include <hypha/plugin/hyphaplugin.h>
+#include <hypha/utils/logger.h>
 
 using namespace hypha::utils;
 using namespace hypha::plugin;

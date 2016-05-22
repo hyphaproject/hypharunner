@@ -1,6 +1,9 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef SERVERSTATUS_H
 #define SERVERSTATUS_H
 
+#include <string>
 #include <hypha/handler/hyphahandler.h>
 
 namespace hypha {
@@ -18,17 +21,19 @@ class ServerStatus : public HyphaHandler {
   const std::string getDescription() {
     return "Handler to send server status as email";
   }
-  void parse(std::string message);
+
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string config);
   std::string getConfig();
+
+  void parse(std::string message);
+
   HyphaHandler *getInstance(std::string id);
 
   void receiveMessage(std::string message);
   std::string communicate(std::string message);
 
   void sendEMail();
-
- protected:
 };
 }
 }

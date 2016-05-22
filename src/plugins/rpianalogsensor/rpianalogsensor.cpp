@@ -1,13 +1,18 @@
+// Copyright (c) 2015-2016 Hypha
+
+#include "rpianalogsensor.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <Poco/ClassLibrary.h>
-#include <hypha/utils/logger.h>
+
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
-#include "rpianalogsensor.h"
+
+#include <hypha/utils/logger.h>
 
 using namespace hypha::utils;
 using namespace hypha::plugin;

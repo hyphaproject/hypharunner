@@ -1,7 +1,12 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef WATERSENSOR_H
 #define WATERSENSOR_H
-#include <hypha/plugin/hyphaplugin.h>
+
+#include <string>
 #include <mutex>
+#include <hypha/plugin/hyphaplugin.h>
+
 namespace hypha {
 namespace plugin {
 namespace watersensor {
@@ -13,9 +18,12 @@ class WaterSensor : public HyphaPlugin {
   const std::string getTitle() { return "WaterSensor"; }
   const std::string getVersion() { return "0.1"; }
   const std::string getDescription() { return "Plugin to read water sensor"; }
-  std::string getStatusMessage();
+
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
+  std::string getStatusMessage();
+
   void measure();
   HyphaPlugin *getInstance(std::string id);
 

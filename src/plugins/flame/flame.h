@@ -1,7 +1,12 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef FLAME_H
 #define FLAME_H
-#include <hypha/plugin/hyphaplugin.h>
+
+#include <string>
 #include <mutex>
+#include <hypha/plugin/hyphaplugin.h>
+
 namespace hypha {
 namespace plugin {
 namespace flame {
@@ -15,9 +20,11 @@ class Flame : public HyphaPlugin {
   const std::string getDescription() {
     return "Plugin to read flame sensor data";
   }
-  std::string getStatusMessage();
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
+  std::string getStatusMessage();
+
   void measure();
   HyphaPlugin *getInstance(std::string id);
 

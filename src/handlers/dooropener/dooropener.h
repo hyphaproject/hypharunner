@@ -1,6 +1,9 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef DOOROPENER_H
 #define DOOROPENER_H
 
+#include <string>
 #include <hypha/handler/hyphahandler.h>
 
 namespace hypha {
@@ -17,10 +20,13 @@ class DoorOpener : public HyphaHandler {
   const std::string getVersion() { return "0.1"; }
   const std::string getDescription() { return "Handler to open doors."; }
 
-  void parse(std::string message);
-  void giveFeedback(std::string username);
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string config);
   std::string getConfig();
+
+  void parse(std::string message);
+  void giveFeedback(std::string username);
+
   HyphaHandler *getInstance(std::string id);
 
   void receiveMessage(std::string message);

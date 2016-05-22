@@ -1,8 +1,12 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef VIDEOCONTROL_H
 #define VIDEOCONTROL_H
-#include <hypha/handler/hyphahandler.h>
+
+#include <string>
 #include <mutex>
 #include <thread>
+#include <hypha/handler/hyphahandler.h>
 
 namespace hypha {
 namespace handler {
@@ -17,9 +21,12 @@ class VideoControl : public HyphaHandler {
   const std::string getTitle() { return "VideoControl"; }
   const std::string getVersion() { return "0.1"; }
   const std::string getDescription() { return "Handler for Video Control."; }
-  void parse(std::string message);
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string config);
   std::string getConfig();
+
+  void parse(std::string message);
+
   HyphaHandler *getInstance(std::string id);
 
   void receiveMessage(std::string message);

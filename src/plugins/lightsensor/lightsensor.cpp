@@ -1,14 +1,19 @@
+// Copyright (c) 2015-2016 Hypha
+
+#include "lightsensor.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <wiringPi.h>
 
-#include <Poco/ClassLibrary.h>
-#include <hypha/utils/logger.h>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QProcess>
-#include "lightsensor.h"
+
+#include <Poco/ClassLibrary.h>
+
+#include <wiringPi.h>
+#include <hypha/utils/logger.h>
 
 #define PIN 5
 

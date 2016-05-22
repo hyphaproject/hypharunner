@@ -1,11 +1,17 @@
+// Copyright (c) 2015-2016 Hypha
+
 #include "pythonplugin.h"
-#include <Poco/ClassLibrary.h>
-#include <hypha/plugin/hyphaplugin.h>
-#include <hypha/utils/logger.h>
+
+#include <iostream>
+
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <iostream>
+
+#include <Poco/ClassLibrary.h>
+
+#include <hypha/plugin/hyphaplugin.h>
+#include <hypha/utils/logger.h>
 
 namespace py = boost::python;
 using namespace boost::python;

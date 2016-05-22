@@ -1,7 +1,12 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef RFID_H
 #define RFID_H
-#include <hypha/plugin/hyphaplugin.h>
+
+#include <string>
 #include <QtSerialPort/QSerialPort>
+#include <hypha/plugin/hyphaplugin.h>
+
 namespace hypha {
 namespace plugin {
 namespace rfid {
@@ -13,6 +18,7 @@ class RFID : public HyphaPlugin {
   const std::string getTitle() { return "RFID"; }
   const std::string getVersion() { return "0.1"; }
   const std::string getDescription() { return "Plugin to detect rfid cards."; }
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
   HyphaPlugin *getInstance(std::string id);

@@ -1,12 +1,14 @@
+// Copyright (c) 2015-2016 Hypha
+
 #include "dooropener.h"
+
+#include <chrono>
+#include <thread>
+
 #include <Poco/ClassLibrary.h>
 #include <Poco/Data/RecordSet.h>
 #include <Poco/Data/Statement.h>
-#include <hypha/core/database/database.h>
-#include <hypha/core/database/userdatabase.h>
-#include <hypha/plugin/hyphaplugin.h>
-#include <hypha/plugin/pluginloader.h>
-#include <hypha/utils/logger.h>
+
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
 #include <QtCore/QJsonArray>
@@ -15,8 +17,12 @@
 #include <QtCore/QMutex>
 #include <QtCore/QTimer>
 #include <QtSql/QSqlError>
-#include <chrono>
-#include <thread>
+
+#include <hypha/core/database/database.h>
+#include <hypha/core/database/userdatabase.h>
+#include <hypha/plugin/hyphaplugin.h>
+#include <hypha/plugin/pluginloader.h>
+#include <hypha/utils/logger.h>
 
 using namespace hypha::utils;
 using namespace hypha::database;

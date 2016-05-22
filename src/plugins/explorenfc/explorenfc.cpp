@@ -1,3 +1,6 @@
+// Copyright (c) 2015-2016 Hypha
+
+#include "explorenfc.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QJsonArray>
@@ -6,8 +9,8 @@
 #include <QtCore/QProcess>
 
 #include <Poco/ClassLibrary.h>
+
 #include <hypha/plugin/hyphaplugin.h>
-#include "explorenfc.h"
 
 using namespace hypha::plugin;
 using namespace hypha::plugin::explorenfc;

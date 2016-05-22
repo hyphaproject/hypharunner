@@ -1,8 +1,12 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef VIDEO_H
 #define VIDEO_H
-#include <hypha/plugin/hyphaplugin.h>
+
+#include <string>
 #include <mutex>
 #include <opencv2/opencv.hpp>
+#include <hypha/plugin/hyphaplugin.h>
 
 namespace hypha {
 namespace plugin {
@@ -21,6 +25,7 @@ class Video : public HyphaPlugin {
   const std::string getDescription() {
     return "Plugin to capture videos from webcam.";
   }
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
   HyphaPlugin *getInstance(std::string id);

@@ -1,8 +1,12 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef PYTHONPLUGIN_H
 #define PYTHONPLUGIN_H
 
-#include <hypha/plugin/hyphaplugin.h>
+#include <string>
 #include <boost/python.hpp>
+#include <hypha/plugin/hyphaplugin.h>
+
 namespace hypha {
 namespace plugin {
 namespace pythonplugin {
@@ -14,6 +18,7 @@ class PythonPlugin : public HyphaPlugin {
   const std::string getTitle() { return "Python Plugin"; }
   const std::string getVersion() { return "0.1"; }
   const std::string getDescription() { return "Plugin to use Python code."; }
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
   HyphaPlugin *getInstance(std::string id);

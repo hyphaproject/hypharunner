@@ -1,14 +1,18 @@
+// Copyright (c) 2015-2016 Hypha
 
 #include "email.h"
+
 #include <Poco/ClassLibrary.h>
 #include <Poco/Net/MailMessage.h>
 #include <Poco/Net/MailRecipient.h>
 #include <Poco/Net/NetException.h>
 #include <Poco/Net/SMTPClientSession.h>
-#include <hypha/plugin/hyphaplugin.h>
-#include <hypha/utils/logger.h>
+
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
+
+#include <hypha/plugin/hyphaplugin.h>
+#include <hypha/utils/logger.h>
 
 using namespace hypha::utils;
 using namespace hypha::plugin;

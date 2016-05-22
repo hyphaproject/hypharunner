@@ -1,8 +1,13 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef ALARM_H
 #define ALARM_H
 
-#include <hypha/handler/hyphahandler.h>
+#include <string>
 #include <map>
+#include <string>
+
+#include <hypha/handler/hyphahandler.h>
 
 namespace hypha {
 namespace handler {
@@ -17,9 +22,12 @@ class Alarm : public HyphaHandler {
   const std::string getTitle() { return "Alarm"; }
   const std::string getVersion() { return "0.1"; }
   const std::string getDescription() { return "Handler for Alarm Control."; }
-  void parse(std::string message);
+
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string config);
   std::string getConfig();
+
+  void parse(std::string message);
   HyphaHandler *getInstance(std::string id);
 
   void receiveMessage(std::string message);

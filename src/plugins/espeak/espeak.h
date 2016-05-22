@@ -1,6 +1,11 @@
+// Copyright (c) 2015-2016 Hypha
+
 #ifndef ESPEAK_H
 #define ESPEAK_H
+
+#include <string>
 #include <hypha/plugin/hyphaplugin.h>
+
 namespace hypha {
 namespace plugin {
 namespace espeak {
@@ -15,6 +20,7 @@ class ESpeak : public HyphaPlugin {
   const std::string getDescription() {
     return "Plugin to speak text with espeak.";
   }
+  const std::string getConfigDescription() { return "{}"; }
   void loadConfig(std::string json);
   std::string getConfig();
   HyphaPlugin *getInstance(std::string id);
