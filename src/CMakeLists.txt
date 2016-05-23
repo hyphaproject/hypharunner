@@ -35,6 +35,3 @@ add_executable(hypharunner "hypharunner.cpp" ${Sources} ${Headers})
 target_link_libraries(hypharunner ${hypharunnerlibs})
 
 INSTALL(TARGETS hypharunner DESTINATION hypharunner/bin)
-
-add_subdirectory( handlers )
-add_subdirectory( plugins )
