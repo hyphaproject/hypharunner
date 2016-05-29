@@ -21,9 +21,9 @@
 #include <Poco/Util/ServerApplication.h>
 #include <hypha/core/database/database.h>
 #include <hypha/core/database/userdatabase.h>
+#include <hypha/core/settings/configgenerator.h>
 #include <hypha/core/settings/databasesettings.h>
 #include <hypha/core/settings/hyphasettings.h>
-#include <hypha/core/settings/configgenerator.h>
 #include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
@@ -55,16 +55,30 @@ int HyphaRunner::main(const std::vector<std::string> &args) {
 
   try {
     Logger::info("Starting Hypha Runner!");
+    HyphaSettings::loadInstance(
+        config().getString("config-file", "hypha.conf"));
     Logger::info("\nLoading Database Settings ...\n");
     DatabaseSettings::instance();
     UserDatabaseSettings::instance();
-
     Logger::info("Loading Database ...");
     UserDatabase::instance();
+
+    std::string stdHandlersDir;
+    std::string stdPluginsDir;
+#ifdef __linux__
+    stdHandlersDir = "/usr/local/lib/hyphahandlers";
+    stdPluginsDir = "/usr/local/lib/hyphaplugins";
+#else
+    stdHandlersDir = "../hyphahandlers";
+    stdPluginsDir = "../hyphaplugins";
+#endif
+
     Logger::info("Loading Handler ...");
-    HandlerLoader::instance();
+    HandlerLoader::instance()->loadHandlers(
+        config().getString("handlersdir", stdHandlersDir));
     Logger::info("Loading Plugins ...");
-    PluginLoader::instance();
+    PluginLoader::instance()->loadPlugins(
+        config().getString("pluginsdir", stdPluginsDir));
     Logger::info("Init Handler ...");
     Controller::instance()->loadHandler();
     Logger::info("Init Plugins ...");
@@ -104,10 +118,22 @@ void HyphaRunner::defineOptions(OptionSet &options) {
   options.addOption(
       Option("config-file", "f", "load configuration data from a file")
           .required(false)
-          .repeatable(true)
+          .repeatable(false)
           .argument("file")
           .callback(
               OptionCallback<HyphaRunner>(this, &HyphaRunner::handleConfig)));
+  options.addOption(Option("handlersdir", "hd", "location for handlers")
+                        .required(false)
+                        .repeatable(false)
+                        .argument("dir")
+                        .callback(OptionCallback<HyphaRunner>(
+                            this, &HyphaRunner::handleConfig)));
+  options.addOption(Option("pluginsdir", "pd", "location for plugins")
+                        .required(false)
+                        .repeatable(false)
+                        .argument("dir")
+                        .callback(OptionCallback<HyphaRunner>(
+                            this, &HyphaRunner::handleConfig)));
 }
 
 void HyphaRunner::handleHelp(const std::string &name,
@@ -117,19 +143,29 @@ void HyphaRunner::handleHelp(const std::string &name,
   stopOptionsProcessing();
 }
 
-void HyphaRunner::handleExampleFile(const std::string &name, const std::string &value)
-{
-    _exampleRequested = true;
-    Logger::info("Create Example Config File: " + value);
-    hypha::settings::ConfigGenerator generator;
-    generator.generateConfigFile(value);
-    stopOptionsProcessing();
+void HyphaRunner::handleExampleFile(const std::string &name,
+                                    const std::string &value) {
+  _exampleRequested = true;
+  Logger::info("Create Example Config File: " + value);
+  hypha::settings::ConfigGenerator generator;
+  generator.generateConfigFile(value);
+  stopOptionsProcessing();
 }
 
 void HyphaRunner::handleConfig(const std::string &name,
                                const std::string &value) {
-  Logger::info("Loading Config from File: " + value);
-  HyphaSettings::loadInstance(value);
+  if (name == "config-file" || name == "f") {
+    Logger::info("Loading Config from File: " + value);
+    config().setString("config-file", value);
+  }
+  if (name == "handlersdir" || name == "hd") {
+    Logger::info("Loading Handlers from dir: " + value);
+    config().setString("handlersdir", value);
+  }
+  if (name == "pluginsdir" || name == "pd") {
+    Logger::info("Loading Plugins from dir: " + value);
+    config().setString("pluginsdir", value);
+  }
 }
 
 void HyphaRunner::displayHelp() {
