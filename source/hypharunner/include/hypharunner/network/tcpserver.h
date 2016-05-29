@@ -4,17 +4,15 @@
 #include <Poco/Net/HTTPServer.h>
 
 class TcpServer {
+ public:
+  TcpServer();
+  ~TcpServer();
 
-  public:
-    TcpServer();
-    ~TcpServer();
+  void start();
+  void stop();
 
-    void start();
-    void stop();
-
-  protected:
-    Poco::Net::HTTPServer *srv;
-
+ protected:
+  Poco::Net::HTTPServer *srv;
 };
 
-#endif // TCPSERVER_H
+#endif  // TCPSERVER_H

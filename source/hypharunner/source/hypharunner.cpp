@@ -23,6 +23,7 @@
 #include <hypha/core/database/userdatabase.h>
 #include <hypha/core/settings/databasesettings.h>
 #include <hypha/core/settings/hyphasettings.h>
+#include <hypha/core/settings/configgenerator.h>
 #include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
@@ -37,8 +38,20 @@ using namespace hypha::utils;
 using namespace hypha::settings;
 using namespace hypha::database;
 
+void HyphaRunner::initialize(Application &self) {
+  ServerApplication::initialize(self);
+  Logger::info("Starting Hypha Runner!");
+}
+
+void HyphaRunner::uninitialize() {
+  Logger::info("Shutting Down Hypha Runner");
+  ServerApplication::uninitialize();
+}
+
 int HyphaRunner::main(const std::vector<std::string> &args) {
-  if (_helpRequested) return EXIT_OK;
+  if (_helpRequested) {
+    return Application::EXIT_OK;
+  }
 
   try {
     Logger::info("Starting Hypha Runner!");
@@ -82,6 +95,12 @@ void HyphaRunner::defineOptions(OptionSet &options) {
                         .repeatable(false)
                         .callback(OptionCallback<HyphaRunner>(
                             this, &HyphaRunner::handleHelp)));
+  options.addOption(Option("example", "ec", "create example config file")
+                        .required(false)
+                        .repeatable(false)
+                        .argument("file")
+                        .callback(OptionCallback<HyphaRunner>(
+                            this, &HyphaRunner::handleExampleFile)));
   options.addOption(
       Option("config-file", "f", "load configuration data from a file")
           .required(false)
@@ -96,6 +115,15 @@ void HyphaRunner::handleHelp(const std::string &name,
   _helpRequested = true;
   displayHelp();
   stopOptionsProcessing();
+}
+
+void HyphaRunner::handleExampleFile(const std::string &name, const std::string &value)
+{
+    _exampleRequested = true;
+    Logger::info("Create Example Config File: " + value);
+    hypha::settings::ConfigGenerator generator;
+    generator.generateConfigFile(value);
+    stopOptionsProcessing();
 }
 
 void HyphaRunner::handleConfig(const std::string &name,
