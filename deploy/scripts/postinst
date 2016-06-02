@@ -24,7 +24,7 @@ set -e
 
 case "$1" in
     configure)
-	if [ ! -f /etc/hypha/hypha.conf]; then
+	if [ ! -f /etc/hypha/hypha.conf ]; then
 		mkdir -p /etc/hypha && cd /etc/hypha && hypharunner -ec hypha.conf
 	fi
     ;;
