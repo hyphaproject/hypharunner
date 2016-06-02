@@ -24,6 +24,7 @@
 #include <hypha/core/settings/configgenerator.h>
 #include <hypha/core/settings/databasesettings.h>
 #include <hypha/core/settings/hyphasettings.h>
+#include <hypha/core/database/databasegenerator.h>
 #include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
@@ -149,6 +150,14 @@ void HyphaRunner::handleExampleFile(const std::string &name,
   Logger::info("Create Example Config File: " + value);
   hypha::settings::ConfigGenerator generator;
   generator.generateConfigFile(value);
+  hypha::settings::HyphaSettings hyphaSettings(value);
+  hyphaSettings.load();
+  hypha::settings::UserDatabaseSettings userDatabaseSettings(&hyphaSettings);
+  hypha::settings::DatabaseSettings databaseSettings(&hyphaSettings);
+  hypha::database::DatabaseGenerator databaseGenerator;
+  databaseGenerator.generateExampleUserDatabase(&userDatabaseSettings);
+  databaseGenerator.generateExampleDatabase(&databaseSettings);
+
   stopOptionsProcessing();
 }
 
