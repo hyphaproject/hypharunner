@@ -46,10 +46,10 @@ void Controller::loadPlugins() {
 
 void Controller::createConnections() {
   hypha::controller::Connection con(Database::instance());
-  for (std::tuple<std::string, std::string> t : con.getConnections()) {
+  for (std::tuple<std::string, std::string, std::string> t : con.getConnections()) {
     try {
-      std::string handlerId = std::get<0>(t);
-      std::string pluginId = std::get<1>(t);
+      std::string handlerId = std::get<1>(t);
+      std::string pluginId = std::get<2>(t);
       Connection *connection = Connection::factory(handlerId, pluginId);
       connection->connect();
     } catch (std::exception &ex) {
