@@ -158,7 +158,7 @@ target_link_libraries(${target}
     ${DEFAULT_LIBRARIES}
     ${Boost_LIBRARIES}
     ${Poco_LIBRARIES}
-    hypha::core hypha::utils hypha::plugin hypha::handler
+    hypha::controller hypha::core hypha::utils hypha::plugin hypha::handler
     INTERFACE
 )
 

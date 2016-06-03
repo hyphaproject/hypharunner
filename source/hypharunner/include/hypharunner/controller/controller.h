@@ -1,5 +1,6 @@
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
+// Copyright (c) 2015-2016 Hypha
+
+#pragma once
 
 class Controller {
  public:
@@ -16,5 +17,3 @@ class Controller {
 
   static Controller *singleton;
 };
-
-#endif  // CONTROLLER_H

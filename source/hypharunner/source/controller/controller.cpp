@@ -1,13 +1,17 @@
-#include <Poco/Data/RecordSet.h>
-#include <Poco/Data/Statement.h>
-#include <mutex>
+// Copyright (c) 2015-2016 Hypha
 
+#include <hypha/controller/connection.h>
 #include <hypha/core/database/database.h>
 #include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
 #include "hypharunner/controller/connection.h"
 #include "hypharunner/controller/controller.h"
+
+#include <mutex>
+
+#include <Poco/Data/RecordSet.h>
+#include <Poco/Data/Statement.h>
 
 using namespace hypha::utils;
 using namespace hypha::plugin;
@@ -41,21 +45,16 @@ void Controller::loadPlugins() {
 }
 
 void Controller::createConnections() {
-  Poco::Data::Statement statement = Database::instance()->getStatement();
-  statement << "SELECT `id`,`handler_id`,`plugin_id` FROM `connection`";
-  statement.execute();
-  Poco::Data::RecordSet rs(statement);
-  bool more = rs.moveFirst();
-  while (more) {
+  hypha::controller::Connection con(Database::instance());
+  for (std::tuple<std::string, std::string> t : con.getConnections()) {
     try {
-      std::string handlerId = rs[1].convert<std::string>();
-      std::string pluginId = rs[2].convert<std::string>();
+      std::string handlerId = std::get<0>(t);
+      std::string pluginId = std::get<1>(t);
       Connection *connection = Connection::factory(handlerId, pluginId);
       connection->connect();
     } catch (std::exception &ex) {
       Logger::error(ex.what());
     }
-    more = rs.moveNext();
   }
 }
 
