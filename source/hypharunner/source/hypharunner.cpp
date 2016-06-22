@@ -20,11 +20,11 @@
 #include <Poco/Util/HelpFormatter.h>
 #include <Poco/Util/ServerApplication.h>
 #include <hypha/core/database/database.h>
+#include <hypha/core/database/databasegenerator.h>
 #include <hypha/core/database/userdatabase.h>
 #include <hypha/core/settings/configgenerator.h>
 #include <hypha/core/settings/databasesettings.h>
 #include <hypha/core/settings/hyphasettings.h>
-#include <hypha/core/database/databasegenerator.h>
 #include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
@@ -50,7 +50,7 @@ void HyphaRunner::uninitialize() {
 }
 
 int HyphaRunner::main(const std::vector<std::string> &args) {
-  if (_helpRequested) {
+  if (_helpRequested || _exampleRequested) {
     return Application::EXIT_OK;
   }
 
