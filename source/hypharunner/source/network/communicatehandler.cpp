@@ -1,3 +1,4 @@
+// Copyright (c) 2015-2016 Hypha
 #include "hypharunner/network/communicatehandler.h"
 #include <Poco/Exception.h>
 #include <Poco/Net/HTMLForm.h>

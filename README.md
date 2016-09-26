@@ -1,27 +1,41 @@
-# Hypha libraries
+# Hypha Runner
 
-1) Development
+### Quick start
 
-The project is contained in a source directory for active development.
+First install CMake, Poco, Boost
 
-binaries: ./build
-rpath:    absolute paths to all dependencies
-datapath: ..
+#### Build confdesc
 
+```sh
+git clone https://github.com/falsecam/confdesc.git
+cd confdesc
+mkdir build
+cd build
+cmake ..
+make
+```
 
-2) Installation (default)
+#### Build hypha
 
-The project is installed in a self-contained directory, ready for being moved or copied to another location or computer.
+```sh
+git clone https://github.com/hyphaproject/hypha.git
+cd hypha
+mkdir build
+cd build
+cmake ..
+make
+```
 
-binaries: ./bin
-rpath:    $ORIGIN/../lib
-datapath: ..
+#### Build hypharunner
 
+```sh
+git clone https://github.com/hyphaproject/hypharunner.git
+cd hypharunner
+mkdir build
+cd build
+cmake -Dhypha_DIR=../hypha -Dconfdesc_DIR=../confdesc ..
+make
+```
 
-3) Installation (unix system install)
-
-The project is installed globally on a system.
-
-binaries: /usr/[local/]bin
-rpath:    empty
-datapath: /usr/[local/]share/<projectname>
+-------------------------------
+![Logo](/deploy/images/logo.png) Icon made by [Freepik](http://www.freepik.com) from [www.flaticon.com](http://www.flaticon.com)

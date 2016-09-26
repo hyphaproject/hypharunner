@@ -1,5 +1,4 @@
 // Copyright (c) 2015-2016 Hypha
-
 #ifndef HYPHARUNNER_H
 #define HYPHARUNNER_H
 

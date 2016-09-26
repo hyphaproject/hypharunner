@@ -1,5 +1,4 @@
-// Copyright (c) 2015-2016 HyphaRunner
-
+// Copyright (c) 2015-2016 Hypha
 #include "hypharunner/hypharunner.h"
 #include <chrono>
 #include <iostream>

@@ -1,3 +1,4 @@
+// Copyright (c) 2015-2016 Hypha
 #ifndef CONNECTION_H
 #define CONNECTION_H
 

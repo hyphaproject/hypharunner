@@ -1,3 +1,4 @@
+// Copyright (c) 2015-2016 Hypha
 #include "hypharunner/network/tcpserver.h"
 #include <Poco/Net/HTTPServerParams.h>
 #include <Poco/Net/ServerSocket.h>

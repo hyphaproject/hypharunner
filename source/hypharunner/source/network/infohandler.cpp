@@ -1,3 +1,4 @@
+// Copyright (c) 2015-2016 Hypha
 #include "hypharunner/network/infohandler.h"
 #include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>

@@ -1,3 +1,4 @@
+// Copyright (c) 2015-2016 Hypha
 #include "hypharunner/network/requesthandlerfactory.h"
 #include <hypha/utils/logger.h>
 #include <boost/algorithm/string/predicate.hpp>

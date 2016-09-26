@@ -1,12 +1,12 @@
 // Copyright (c) 2015-2016 Hypha
 
+#include "hypharunner/controller/controller.h"
 #include <hypha/controller/connection.h>
 #include <hypha/core/database/database.h>
 #include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
 #include "hypharunner/controller/connection.h"
-#include "hypharunner/controller/controller.h"
 
 #include <mutex>
 
@@ -46,7 +46,8 @@ void Controller::loadPlugins() {
 
 void Controller::createConnections() {
   hypha::controller::Connection con(Database::instance());
-  for (std::tuple<std::string, std::string, std::string> t : con.getConnections()) {
+  for (std::tuple<std::string, std::string, std::string> t :
+       con.getConnections()) {
     try {
       std::string handlerId = std::get<1>(t);
       std::string pluginId = std::get<2>(t);

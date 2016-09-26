@@ -1,3 +1,4 @@
+// Copyright (c) 2015-2016 Hypha
 #ifndef INFOHANDLER_H
 #define INFOHANDLER_H
 
