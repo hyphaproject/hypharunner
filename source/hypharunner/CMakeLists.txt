@@ -39,7 +39,6 @@ ${include_path}/controller/controller.h
 ${include_path}/controller/handlerserver.h
 ${include_path}/controller/localconnection.h
 ${include_path}/controller/networkconnection.h
-${include_path}/controller/pointercontroller.h
 ${include_path}/network/communicatehandler.h
 ${include_path}/network/infohandler.h
 ${include_path}/network/pointerhandler.h
@@ -57,7 +56,6 @@ ${source_path}/controller/controller.cpp
 ${source_path}/controller/handlerserver.cpp
 ${source_path}/controller/localconnection.cpp
 ${source_path}/controller/networkconnection.cpp
-${source_path}/controller/pointercontroller.cpp
 ${source_path}/network/communicatehandler.cpp
 ${source_path}/network/infohandler.cpp
 ${source_path}/network/pointerhandler.cpp

@@ -13,12 +13,10 @@ message(STATUS "Test ${target}")
 set(hypharunner_source_path  "${PROJECT_SOURCE_DIR}/source/hypharunner/source")
 
 set(hypharunner_sources
-${hypharunner_source_path}/controller/pointercontroller.cpp
 )
 
 set(sources
     main.cpp
-    pointercontroller_test.cpp
     ${hypharunner_sources}
 )
 
