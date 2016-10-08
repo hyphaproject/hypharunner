@@ -37,6 +37,10 @@ set(DEFAULT_INCLUDE_DIRECTORIES)
 # Libraries
 # 
 
+find_package(Boost COMPONENTS signals thread system filesystem REQUIRED)
+find_package(Poco COMPONENTS Foundation Util Net Data DataMySQL DataSQLite Redis REQUIRED)
+find_package(hypha COMPONENTS core utils plugin handler)
+
 set(DEFAULT_LIBRARIES)
 
 

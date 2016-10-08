@@ -18,7 +18,7 @@ using namespace hypha::plugin;
 using namespace hypha::handler;
 using namespace hypha::database;
 
-Controller *Controller::singleton = 0;
+Controller *Controller::singleton = nullptr;
 
 Controller::Controller() {}
 

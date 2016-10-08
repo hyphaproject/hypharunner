@@ -1,12 +1,14 @@
 // Copyright (c) 2015-2016 Hypha
+
 #include "hypharunner/network/requesthandlerfactory.h"
-#include <hypha/utils/logger.h>
-#include <boost/algorithm/string/predicate.hpp>
 #include "hypharunner/network/communicatehandler.h"
 #include "hypharunner/network/infohandler.h"
 #include "hypharunner/network/roothandler.h"
 #include "hypharunner/network/sendhandler.h"
 #include "hypharunner/network/statusmessagehandler.h"
+
+#include <hypha/utils/logger.h>
+#include <boost/algorithm/string/predicate.hpp>
 
 using namespace hypha::utils;
 
