@@ -7,9 +7,9 @@
 
 #include <hypha/controller/connection.h>
 #include <hypha/core/database/database.h>
+#include <hypha/plugin/hyphasender.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/plugin/pluginutil.h>
-#include <hypha/plugin/hyphasender.h>
 #include <hypha/utils/logger.h>
 
 #include <Poco/Data/RecordSet.h>
@@ -59,8 +59,8 @@ void Controller::createConnections() {
 void Controller::startThreads() {
   for (HyphaBasePlugin *plugin : PluginLoader::instance()->getInstances()) {
     Logger::info("start thread: " + plugin->getId());
-    if(PluginUtil::isSender(plugin))
-        ((HyphaSender*)plugin)->setCallMessageFunction(Connection::communicate);
+    if (PluginUtil::isSender(plugin))
+      ((HyphaSender *)plugin)->setCallMessageFunction(Connection::communicate);
     plugin->setup();
   }
   for (HyphaBasePlugin *plugin : PluginLoader::instance()->getInstances()) {

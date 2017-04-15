@@ -45,8 +45,8 @@ void SendHandler::handleRequest(Poco::Net::HTTPServerRequest &request,
     hypha::plugin::HyphaBasePlugin *plugin =
         hypha::plugin::PluginLoader::instance()->getPluginInstance(id);
     if (plugin) {
-        if(hypha::plugin::PluginUtil::isReceiver(plugin))
-            ((hypha::plugin::HyphaReceiver*)plugin)->receiveMessage(message);
+      if (hypha::plugin::PluginUtil::isReceiver(plugin))
+        ((hypha::plugin::HyphaReceiver *)plugin)->receiveMessage(message);
       ostr << plugin->name() << "<br/> " << plugin->getDescription();
     } else {
       ostr << "<html><head><title>HTTP Server powered by POCO C++ "

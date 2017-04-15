@@ -16,6 +16,7 @@ class HyphaRunner : public Poco::Util::ServerApplication {
   int main(const std::vector<std::string> &args);
   void defineOptions(Poco::Util::OptionSet &options);
   void handleHelp(const std::string &name, const std::string &value);
+  void handleList(const std::string &name, const std::string &value);
   void handleExampleFile(const std::string &name, const std::string &value);
   void handleConfig(const std::string &name, const std::string &value);
   void displayHelp();

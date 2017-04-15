@@ -39,6 +39,12 @@ using namespace hypha::utils;
 using namespace hypha::settings;
 using namespace hypha::database;
 
+#ifdef __linux__
+std::string stdPluginsDir = "/usr/local/share/hypha/plugins";
+#else
+std::string stdPluginsDir = "../plugins";
+#endif
+
 void HyphaRunner::initialize(Application &self) {
   ServerApplication::initialize(self);
   Logger::info("Starting Hypha Runner!");
@@ -63,16 +69,6 @@ int HyphaRunner::main(const std::vector<std::string> &args) {
     UserDatabaseSettings::instance();
     Logger::info("Loading Database ...");
     UserDatabase::instance();
-
-    std::string stdHandlersDir;
-    std::string stdPluginsDir;
-#ifdef __linux__
-    stdHandlersDir = "/usr/local/lib/hyphahandlers";
-    stdPluginsDir = "/usr/local/lib/hyphaplugins";
-#else
-    stdHandlersDir = "../hyphahandlers";
-    stdPluginsDir = "../hyphaplugins";
-#endif
 
     Logger::info("Loading Plugins ...");
     PluginLoader::instance()->loadPlugins(
@@ -105,6 +101,13 @@ void HyphaRunner::defineOptions(OptionSet &options) {
                         .repeatable(false)
                         .callback(OptionCallback<HyphaRunner>(
                             this, &HyphaRunner::handleHelp)));
+  options.addOption(
+      Option("list", "lp", "list plugins, params are handler, actors, sensors")
+          .required(false)
+          .repeatable(false)
+          .argument("handler|actors|sensors")
+          .callback(
+              OptionCallback<HyphaRunner>(this, &HyphaRunner::handleList)));
   options.addOption(Option("example", "ec", "create example config file")
                         .required(false)
                         .repeatable(false)
@@ -137,6 +140,17 @@ void HyphaRunner::handleHelp(const std::string &name,
   _helpRequested = true;
   displayHelp();
   stopOptionsProcessing();
+}
+
+void HyphaRunner::handleList(const std::string &name,
+                             const std::string &value) {
+  std::string pluginsDir = config().getString("pluginsdir", stdPluginsDir);
+  std::cout << "Plugins found in " << pluginsDir << std::endl;
+
+  for (hypha::plugin::HyphaBasePlugin *plugin :
+       PluginLoader::listPlugins(pluginsDir)) {
+    std::cout << plugin->name() << std::endl;
+  }
 }
 
 void HyphaRunner::handleExampleFile(const std::string &name,

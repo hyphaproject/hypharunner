@@ -6,8 +6,8 @@
 
 #include <hypha/core/settings/handlersettings.h>
 #include <hypha/core/settings/pluginsettings.h>
-#include <hypha/plugin/pluginloader.h>
 #include <hypha/plugin/hyphasender.h>
+#include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
 
 #include <Poco/Net/DNS.h>
@@ -37,7 +37,8 @@ bool NetworkConnection::connect() {
            Poco::Net::DNS::hostName() ||
        HandlerSettings::instance()->getHost(senderId) == "localhost")) {
     Logger::info("connection (s+r): " + sender->getId() + " + " + receiverId);
-    ((HyphaSender*)sender)->connect(boost::bind(&NetworkConnection::receiveMessage, this, _1));
+    ((HyphaSender *)sender)
+        ->connect(boost::bind(&NetworkConnection::receiveMessage, this, _1));
     this->id = receiverId;
     this->host = PluginSettings::instance()->getHost(id);
     return true;

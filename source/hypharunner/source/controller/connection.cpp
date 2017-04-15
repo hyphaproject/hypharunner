@@ -8,11 +8,11 @@
 #include <memory>
 
 #include <Poco/Net/DNS.h>
-#include <boost/shared_ptr.hpp>
 #include <hypha/core/settings/handlersettings.h>
 #include <hypha/core/settings/pluginsettings.h>
 #include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
+#include <boost/shared_ptr.hpp>
 
 using namespace hypha::plugin;
 using namespace hypha::handler;

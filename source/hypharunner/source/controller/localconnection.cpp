@@ -20,7 +20,8 @@ LocalConnection::LocalConnection(std::string senderId, std::string receiverId) {
 
 bool LocalConnection::connect() {
   if (sender && receiver) {
-    ((HyphaSender*)sender)->connect(boost::bind(&LocalConnection::senderMessage, this, _1));
+    ((HyphaSender *)sender)
+        ->connect(boost::bind(&LocalConnection::senderMessage, this, _1));
     return true;
   } else {
     return false;
@@ -38,8 +39,9 @@ void LocalConnection::senderMessage(std::string message) {
       if (senderThread->joinable()) senderThread->join();
       delete senderThread;
     }
-    senderThread = new std::thread(
-        [this, message] { ((HyphaReceiver*)this->receiver)->receiveMessage(message); });
+    senderThread = new std::thread([this, message] {
+      ((HyphaReceiver *)this->receiver)->receiveMessage(message);
+    });
   } catch (std::exception &e) {
     hypha::utils::Logger::error(e.what());
   } catch (...) {
