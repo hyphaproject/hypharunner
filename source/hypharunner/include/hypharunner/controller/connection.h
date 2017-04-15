@@ -1,16 +1,16 @@
 // Copyright (c) 2015-2016 Hypha
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#pragma once
 
 #include <string>
 
+/**
+ * @brief The Connection class
+ */
 class Connection {
  public:
   ~Connection();
   virtual bool connect();
   virtual bool disconnect();
-  static Connection *factory(std::string handlerId, std::string pluginId);
+  static Connection *factory(std::string senderId, std::string receiverId);
   static std::string communicate(std::string id, std::string message);
 };
-
-#endif  // CONNECTION_H

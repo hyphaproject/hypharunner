@@ -1,6 +1,5 @@
 // Copyright (c) 2015-2016 Hypha
-#ifndef HYPHARUNNER_H
-#define HYPHARUNNER_H
+#pragma once
 
 #include <Poco/Util/OptionSet.h>
 #include <Poco/Util/ServerApplication.h>
@@ -23,5 +22,3 @@ class HyphaRunner : public Poco::Util::ServerApplication {
   bool _helpRequested = false;
   bool _exampleRequested = false;
 };
-
-#endif  // HYPHARUNNER_H

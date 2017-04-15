@@ -1,5 +1,9 @@
 // Copyright (c) 2015-2016 Hypha
+
 #include "hypharunner/hypharunner.h"
+#include "hypharunner/controller/controller.h"
+#include "hypharunner/network/tcpserver.h"
+
 #include <chrono>
 #include <iostream>
 #include <thread>
@@ -15,9 +19,6 @@
 #include <sstream>
 #endif
 
-#include <Poco/Exception.h>
-#include <Poco/Util/HelpFormatter.h>
-#include <Poco/Util/ServerApplication.h>
 #include <hypha/core/database/database.h>
 #include <hypha/core/database/databasegenerator.h>
 #include <hypha/core/database/userdatabase.h>
@@ -28,12 +29,12 @@
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
 
-#include "hypharunner/controller/controller.h"
-#include "hypharunner/network/tcpserver.h"
+#include <Poco/Exception.h>
+#include <Poco/Util/HelpFormatter.h>
+#include <Poco/Util/ServerApplication.h>
 
 using namespace Poco::Util;
 using namespace hypha::plugin;
-using namespace hypha::handler;
 using namespace hypha::utils;
 using namespace hypha::settings;
 using namespace hypha::database;
@@ -73,14 +74,9 @@ int HyphaRunner::main(const std::vector<std::string> &args) {
     stdPluginsDir = "../hyphaplugins";
 #endif
 
-    Logger::info("Loading Handler ...");
-    HandlerLoader::instance()->loadHandlers(
-        config().getString("handlersdir", stdHandlersDir));
     Logger::info("Loading Plugins ...");
     PluginLoader::instance()->loadPlugins(
         config().getString("pluginsdir", stdPluginsDir));
-    Logger::info("Init Handler ...");
-    Controller::instance()->loadHandler();
     Logger::info("Init Plugins ...");
     Controller::instance()->loadPlugins();
     Logger::info("Starting Threads ...");

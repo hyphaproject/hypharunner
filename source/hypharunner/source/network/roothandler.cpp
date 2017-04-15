@@ -27,7 +27,7 @@ void RootHandler::handleRequest(Poco::Net::HTTPServerRequest &request,
   ostr << "</ul>";
   ostr << "<br/>Plugins: <br/>";
   ostr << "<ul>";
-  for (hypha::plugin::HyphaPlugin *plugin :
+  for (hypha::plugin::HyphaBasePlugin *plugin :
        hypha::plugin::PluginLoader::instance()->getInstances()) {
     ostr << "<li><a href=\"/statusmessage/" + plugin->getId() + "\">" +
                 plugin->getId() + "</a></li>\n";

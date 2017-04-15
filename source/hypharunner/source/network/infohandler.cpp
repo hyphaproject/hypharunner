@@ -18,7 +18,7 @@ void InfoHandler::handleRequest(Poco::Net::HTTPServerRequest &request,
 
   hypha::handler::HyphaHandler *handler =
       hypha::handler::HandlerLoader::instance()->getHandlerInstance(id);
-  hypha::plugin::HyphaPlugin *plugin =
+  hypha::plugin::HyphaBasePlugin *plugin =
       hypha::plugin::PluginLoader::instance()->getPluginInstance(id);
 
   std::ostream &ostr = response.send();

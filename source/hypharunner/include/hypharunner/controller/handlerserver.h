@@ -1,10 +1,7 @@
 // Copyright (c) 2015-2016 Hypha
-#ifndef HANDLERSERVER_H
-#define HANDLERSERVER_H
+#pragma once
 
 class HandlerServer {
  public:
   HandlerServer();
 };
-
-#endif  // HANDLERSERVER_H

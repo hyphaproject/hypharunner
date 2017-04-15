@@ -1,7 +1,9 @@
 // Copyright (c) 2015-2016 Hypha
+
 #include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
+
 #include <boost/shared_ptr.hpp>
 #include <functional>
 #include <memory>
@@ -11,15 +13,14 @@
 using namespace hypha::plugin;
 using namespace hypha::handler;
 
-LocalConnection::LocalConnection(std::string handlerId, std::string pluginId) {
-  this->handler = HandlerLoader::instance()->getHandlerInstance(handlerId);
-  this->plugin = PluginLoader::instance()->getPluginInstance(pluginId);
+LocalConnection::LocalConnection(std::string senderId, std::string receiverId) {
+  this->sender = PluginLoader::instance()->getPluginInstance(senderId);
+  this->receiver = PluginLoader::instance()->getPluginInstance(receiverId);
 }
 
 bool LocalConnection::connect() {
-  if (handler && plugin) {
-    handler->connect(boost::bind(&LocalConnection::handlerMessage, this, _1));
-    plugin->connect(boost::bind(&LocalConnection::pluginMessage, this, _1));
+  if (sender && receiver) {
+    ((HyphaSender*)sender)->connect(boost::bind(&LocalConnection::senderMessage, this, _1));
     return true;
   } else {
     return false;
@@ -31,34 +32,18 @@ bool LocalConnection::disconnect() {
   return false;
 }
 
-void LocalConnection::handlerMessage(std::string message) {
+void LocalConnection::senderMessage(std::string message) {
   try {
-    if (handlerThread) {
-      if (handlerThread->joinable()) handlerThread->join();
-      delete handlerThread;
+    if (senderThread) {
+      if (senderThread->joinable()) senderThread->join();
+      delete senderThread;
     }
-    handlerThread = new std::thread(
-        [this, message] { this->plugin->receiveMessage(message); });
+    senderThread = new std::thread(
+        [this, message] { ((HyphaReceiver*)this->receiver)->receiveMessage(message); });
   } catch (std::exception &e) {
     hypha::utils::Logger::error(e.what());
   } catch (...) {
-    hypha::utils::Logger::error("Error in " + plugin->getId() +
-                                " receiveMessage part.");
-  }
-}
-
-void LocalConnection::pluginMessage(std::string message) {
-  try {
-    if (pluginThread) {
-      if (pluginThread->joinable()) pluginThread->join();
-      delete pluginThread;
-    }
-    pluginThread = new std::thread(
-        [this, message] { this->handler->receiveMessage(message); });
-  } catch (std::exception &e) {
-    hypha::utils::Logger::error(e.what());
-  } catch (...) {
-    hypha::utils::Logger::error("Error in " + handler->getId() +
+    hypha::utils::Logger::error("Error in " + receiver->getId() +
                                 " receiveMessage part.");
   }
 }
@@ -68,7 +53,7 @@ std::string LocalConnection::communicate(std::string id, std::string message) {
   if (handler) {
     return handler->communicate(message);
   }
-  HyphaPlugin *plugin = PluginLoader::instance()->getPluginInstance(id);
+  HyphaBasePlugin *plugin = PluginLoader::instance()->getPluginInstance(id);
   if (plugin) {
     return plugin->communicate(message);
   }
