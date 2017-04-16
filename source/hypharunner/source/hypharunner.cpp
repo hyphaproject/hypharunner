@@ -25,8 +25,8 @@
 #include <hypha/core/settings/configgenerator.h>
 #include <hypha/core/settings/databasesettings.h>
 #include <hypha/core/settings/hyphasettings.h>
-#include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
+#include <hypha/plugin/pluginutil.h>
 #include <hypha/utils/logger.h>
 
 #include <Poco/Exception.h>
@@ -101,13 +101,6 @@ void HyphaRunner::defineOptions(OptionSet &options) {
                         .repeatable(false)
                         .callback(OptionCallback<HyphaRunner>(
                             this, &HyphaRunner::handleHelp)));
-  options.addOption(
-      Option("list", "lp", "list plugins, params are handler, actors, sensors")
-          .required(false)
-          .repeatable(false)
-          .argument("handler|actors|sensors")
-          .callback(
-              OptionCallback<HyphaRunner>(this, &HyphaRunner::handleList)));
   options.addOption(Option("example", "ec", "create example config file")
                         .required(false)
                         .repeatable(false)
@@ -133,6 +126,13 @@ void HyphaRunner::defineOptions(OptionSet &options) {
                         .argument("dir")
                         .callback(OptionCallback<HyphaRunner>(
                             this, &HyphaRunner::handleConfig)));
+  options.addOption(
+      Option("list", "lp", "list plugins, params are handler, actors, sensors")
+          .required(false)
+          .repeatable(false)
+          .argument("handler|actors|sensors|receiver|sender")
+          .callback(
+              OptionCallback<HyphaRunner>(this, &HyphaRunner::handleList)));
 }
 
 void HyphaRunner::handleHelp(const std::string &name,
@@ -145,12 +145,18 @@ void HyphaRunner::handleHelp(const std::string &name,
 void HyphaRunner::handleList(const std::string &name,
                              const std::string &value) {
   std::string pluginsDir = config().getString("pluginsdir", stdPluginsDir);
-  std::cout << "Plugins found in " << pluginsDir << std::endl;
+  std::cout << value << " found in " << pluginsDir << std::endl;
 
   for (hypha::plugin::HyphaBasePlugin *plugin :
        PluginLoader::listPlugins(pluginsDir)) {
-    std::cout << plugin->name() << std::endl;
+    if (value == "actors" && !PluginUtil::isActor(plugin)) continue;
+    if (value == "sensors" && !PluginUtil::isSensor(plugin)) continue;
+    if (value == "handler" && !PluginUtil::isHandler(plugin)) continue;
+    if (value == "sender" && !PluginUtil::isSender(plugin)) continue;
+    if (value == "receiver" && !PluginUtil::isReceiver(plugin)) continue;
+    std::cout << "plugin: " << plugin->name() << std::endl;
   }
+  stopOptionsProcessing();
 }
 
 void HyphaRunner::handleExampleFile(const std::string &name,

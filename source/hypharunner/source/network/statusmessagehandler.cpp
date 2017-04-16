@@ -1,6 +1,7 @@
-// Copyright (c) 2015-2016 Hypha
+// Copyright (c) 2015-2017 Hypha
+
 #include "hypharunner/network/statusmessagehandler.h"
-#include <hypha/handler/handlerloader.h>
+
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
 

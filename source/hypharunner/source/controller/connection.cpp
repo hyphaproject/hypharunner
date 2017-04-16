@@ -10,12 +10,10 @@
 #include <Poco/Net/DNS.h>
 #include <hypha/core/settings/handlersettings.h>
 #include <hypha/core/settings/pluginsettings.h>
-#include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
 #include <boost/shared_ptr.hpp>
 
 using namespace hypha::plugin;
-using namespace hypha::handler;
 using namespace hypha::settings;
 
 Connection *Connection::factory(std::string senderId, std::string receiverId) {

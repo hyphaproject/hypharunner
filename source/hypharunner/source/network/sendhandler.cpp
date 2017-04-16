@@ -2,7 +2,6 @@
 
 #include "hypharunner/network/sendhandler.h"
 
-#include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/hyphareceiver.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/plugin/pluginutil.h>

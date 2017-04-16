@@ -2,7 +2,6 @@
 
 #include "hypharunner/network/communicatehandler.h"
 
-#include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
 

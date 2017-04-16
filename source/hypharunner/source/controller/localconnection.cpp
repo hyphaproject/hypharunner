@@ -1,17 +1,15 @@
-// Copyright (c) 2015-2016 Hypha
-
-#include <hypha/handler/handlerloader.h>
-#include <hypha/plugin/pluginloader.h>
-#include <hypha/utils/logger.h>
-
-#include <boost/shared_ptr.hpp>
-#include <functional>
-#include <memory>
+// Copyright (c) 2015-2017 Hypha
 
 #include "hypharunner/controller/localconnection.h"
 
+#include <functional>
+#include <memory>
+
+#include <hypha/plugin/pluginloader.h>
+#include <hypha/utils/logger.h>
+#include <boost/shared_ptr.hpp>
+
 using namespace hypha::plugin;
-using namespace hypha::handler;
 
 LocalConnection::LocalConnection(std::string senderId, std::string receiverId) {
   this->sender = PluginLoader::instance()->getPluginInstance(senderId);
@@ -51,10 +49,6 @@ void LocalConnection::senderMessage(std::string message) {
 }
 
 std::string LocalConnection::communicate(std::string id, std::string message) {
-  HyphaHandler *handler = HandlerLoader::instance()->getHandlerInstance(id);
-  if (handler) {
-    return handler->communicate(message);
-  }
   HyphaBasePlugin *plugin = PluginLoader::instance()->getPluginInstance(id);
   if (plugin) {
     return plugin->communicate(message);
