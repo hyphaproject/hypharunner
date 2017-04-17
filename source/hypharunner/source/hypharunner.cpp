@@ -76,8 +76,9 @@ int HyphaRunner::main(const std::vector<std::string> &args) {
     Logger::info("Init Plugins ...");
     Controller::instance()->loadPlugins();
     Logger::info("Starting Threads ...");
-    Controller::instance()->startThreads();
     Controller::instance()->createConnections();
+    Controller::instance()->startThreads();
+
     TcpServer tcpServer;
     tcpServer.start();
 

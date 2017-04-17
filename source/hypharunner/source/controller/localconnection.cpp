@@ -7,19 +7,20 @@
 
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
-#include <boost/shared_ptr.hpp>
 
 using namespace hypha::plugin;
 
-LocalConnection::LocalConnection(std::string senderId, std::string receiverId) {
-  this->sender = PluginLoader::instance()->getPluginInstance(senderId);
-  this->receiver = PluginLoader::instance()->getPluginInstance(receiverId);
+LocalConnection::LocalConnection(std::string senderId, std::string receiverId)
+    : Connection(senderId, receiverId) {
+  this->sender = dynamic_cast<HyphaSender *>(
+      PluginLoader::instance()->getPluginInstance(senderId));
+  this->receiver = dynamic_cast<HyphaReceiver *>(
+      PluginLoader::instance()->getPluginInstance(receiverId));
 }
 
-bool LocalConnection::connect() {
+bool LocalConnection::connect(std::shared_ptr<Connection> connection) {
   if (sender && receiver) {
-    ((HyphaSender *)sender)
-        ->connect(boost::bind(&LocalConnection::senderMessage, this, _1));
+    sender->addListener(connection);
     return true;
   } else {
     return false;
@@ -31,19 +32,24 @@ bool LocalConnection::disconnect() {
   return false;
 }
 
-void LocalConnection::senderMessage(std::string message) {
+void LocalConnection::sendMessage(std::string message) {
   try {
     if (senderThread) {
       if (senderThread->joinable()) senderThread->join();
       delete senderThread;
     }
     senderThread = new std::thread([this, message] {
-      ((HyphaReceiver *)this->receiver)->receiveMessage(message);
+      try {
+        receiver->receiveMessage(message);
+      } catch (...) {
+        hypha::utils::Logger::error("Error in " + receiverId +
+                                    " receiveMessage part.");
+      }
     });
   } catch (std::exception &e) {
     hypha::utils::Logger::error(e.what());
   } catch (...) {
-    hypha::utils::Logger::error("Error in " + receiver->getId() +
+    hypha::utils::Logger::error("Error in " + receiverId +
                                 " receiveMessage part.");
   }
 }

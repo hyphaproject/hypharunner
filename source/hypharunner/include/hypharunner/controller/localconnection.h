@@ -1,27 +1,26 @@
 // Copyright (c) 2015-2016 Hypha
 #pragma once
 
-#include "hypharunner/controller/connection.h"
-
 #include <thread>
 
+#include <hypha/plugin/connection.h>
 #include <hypha/plugin/hyphabaseplugin.h>
 #include <hypha/plugin/hyphareceiver.h>
 #include <hypha/plugin/hyphasender.h>
 
-class LocalConnection : public Connection {
+class LocalConnection : public hypha::plugin::Connection {
  public:
   LocalConnection(std::string senderId, std::string receiverId);
-  virtual bool connect();
-  virtual bool disconnect();
+  bool connect(std::shared_ptr<Connection> connection) override;
+  bool disconnect() override;
 
-  void senderMessage(std::string message);
+  virtual void sendMessage(std::string message) override;
 
   static std::string communicate(std::string id, std::string message);
 
  protected:
-  hypha::plugin::HyphaBasePlugin *sender = nullptr;
-  hypha::plugin::HyphaBasePlugin *receiver = nullptr;
+  hypha::plugin::HyphaSender *sender = nullptr;
+  hypha::plugin::HyphaReceiver *receiver = nullptr;
   std::thread *senderThread = nullptr;
   std::thread *receiverThread = nullptr;
 };

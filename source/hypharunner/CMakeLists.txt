@@ -34,7 +34,7 @@ set(source_path  "${CMAKE_CURRENT_SOURCE_DIR}/source")
 
 set(headers
 ${include_path}/hypharunner.h
-${include_path}/controller/connection.h
+${include_path}/controller/connectionfactory.h
 ${include_path}/controller/controller.h
 ${include_path}/controller/handlerserver.h
 ${include_path}/controller/localconnection.h
@@ -51,7 +51,7 @@ ${include_path}/network/tcpserver.h
 
 set(sources
 ${source_path}/hypharunner.cpp
-${source_path}/controller/connection.cpp
+${source_path}/controller/connectionfactory.cpp
 ${source_path}/controller/controller.cpp
 ${source_path}/controller/handlerserver.cpp
 ${source_path}/controller/localconnection.cpp
