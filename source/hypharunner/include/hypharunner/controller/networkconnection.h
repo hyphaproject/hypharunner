@@ -1,8 +1,10 @@
-// Copyright (c) 2015-2016 Hypha
+// Copyright (c) 2015-2017 Hypha
 #pragma once
 
 #include <hypha/plugin/connection.h>
 #include <hypha/plugin/hyphabaseplugin.h>
+#include <hypha/plugin/hyphasender.h>
+#include <hypha/plugin/hyphareceiver.h>
 
 class NetworkConnection : public hypha::plugin::Connection {
  public:
@@ -14,8 +16,8 @@ class NetworkConnection : public hypha::plugin::Connection {
   virtual ~NetworkConnection() {}
 
  protected:
-  hypha::plugin::HyphaBasePlugin *sender;
-  hypha::plugin::HyphaBasePlugin *receiver;
+  hypha::plugin::HyphaSender *sender;
+  hypha::plugin::HyphaReceiver *receiver;
   std::string receiverId;
   std::string senderId;
   std::string host;

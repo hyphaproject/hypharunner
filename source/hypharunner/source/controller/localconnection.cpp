@@ -21,6 +21,7 @@ LocalConnection::LocalConnection(std::string senderId, std::string receiverId)
 bool LocalConnection::connect(std::shared_ptr<Connection> connection) {
   if (sender && receiver) {
     sender->addListener(connection);
+    sender->setCallMessageFunction(LocalConnection::communicate);
     return true;
   } else {
     return false;

@@ -25,8 +25,10 @@ using namespace hypha::settings;
 NetworkConnection::NetworkConnection(std::string senderId,
                                      std::string receiverId)
     : Connection(senderId, receiverId) {
-  this->sender = PluginLoader::instance()->getPluginInstance(senderId);
-  this->receiver = PluginLoader::instance()->getPluginInstance(receiverId);
+    this->sender = dynamic_cast<HyphaSender *>(
+        PluginLoader::instance()->getPluginInstance(senderId));
+    this->receiver = dynamic_cast<HyphaReceiver *>(
+        PluginLoader::instance()->getPluginInstance(receiverId));
   this->senderId = receiverId;
   this->receiverId = senderId;
 }
@@ -36,12 +38,13 @@ bool NetworkConnection::connect(std::shared_ptr<Connection> connection) {
       (PluginSettings::instance()->getHost(senderId) ==
            Poco::Net::DNS::hostName() ||
        PluginSettings::instance()->getHost(senderId) == "localhost")) {
-    Logger::info("connection (s+r): " + sender->getId() + " + " + receiverId);
+    Logger::info("connection (s+r): " + senderId + " + " + receiverId);
     ((HyphaSender *)sender)->addListener(connection);
     //((HyphaSender *)sender)
     //    ->connect(boost::bind(&NetworkConnection::receiveMessage, this, _1));
     this->id = receiverId;
     this->host = PluginSettings::instance()->getHost(id);
+    sender->setCallMessageFunction(NetworkConnection::communicate);
     return true;
   } else {
     return false;

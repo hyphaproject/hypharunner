@@ -57,7 +57,6 @@ void Controller::createConnections() {
           ConnectionFactory::factory(senderId, receiverId);
       connections.push_back(connection);
       connection->connect(connection);
-
     } catch (std::exception &ex) {
       Logger::error(ex.what());
     }
@@ -67,9 +66,7 @@ void Controller::createConnections() {
 void Controller::startThreads() {
   for (HyphaBasePlugin *plugin : PluginLoader::instance()->getInstances()) {
     Logger::info("start thread: " + plugin->getId());
-    // if (PluginUtil::isSender(plugin))
-    //  ((HyphaSender
-    //  *)plugin)->setCallMessageFunction(Connection::communicate);
+
     plugin->setup();
   }
   for (HyphaBasePlugin *plugin : PluginLoader::instance()->getInstances()) {
