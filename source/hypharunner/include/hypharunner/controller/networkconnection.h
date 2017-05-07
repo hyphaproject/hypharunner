@@ -3,8 +3,8 @@
 
 #include <hypha/plugin/connection.h>
 #include <hypha/plugin/hyphabaseplugin.h>
-#include <hypha/plugin/hyphasender.h>
 #include <hypha/plugin/hyphareceiver.h>
+#include <hypha/plugin/hyphasender.h>
 
 class NetworkConnection : public hypha::plugin::Connection {
  public:

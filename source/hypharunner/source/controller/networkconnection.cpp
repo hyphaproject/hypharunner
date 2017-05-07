@@ -25,10 +25,10 @@ using namespace hypha::settings;
 NetworkConnection::NetworkConnection(std::string senderId,
                                      std::string receiverId)
     : Connection(senderId, receiverId) {
-    this->sender = dynamic_cast<HyphaSender *>(
-        PluginLoader::instance()->getPluginInstance(senderId));
-    this->receiver = dynamic_cast<HyphaReceiver *>(
-        PluginLoader::instance()->getPluginInstance(receiverId));
+  this->sender = dynamic_cast<HyphaSender *>(
+      PluginLoader::instance()->getPluginInstance(senderId));
+  this->receiver = dynamic_cast<HyphaReceiver *>(
+      PluginLoader::instance()->getPluginInstance(receiverId));
   this->senderId = receiverId;
   this->receiverId = senderId;
 }
@@ -53,7 +53,7 @@ bool NetworkConnection::connect(std::shared_ptr<Connection> connection) {
 
 bool NetworkConnection::disconnect() { return false; }
 
-void NetworkConnection::sendMessage(std::__cxx11::string message) {
+void NetworkConnection::sendMessage(std::string message) {
   try {
     Poco::Net::HTTPClientSession session(this->host, 47965);
     session.setKeepAlive(false);
