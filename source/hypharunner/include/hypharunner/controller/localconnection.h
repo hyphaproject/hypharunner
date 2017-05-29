@@ -1,29 +1,26 @@
 // Copyright (c) 2015-2016 Hypha
-#ifndef LOCALCONNECTION_H
-#define LOCALCONNECTION_H
+#pragma once
 
-#include <hypha/handler/hyphahandler.h>
-#include <hypha/plugin/hyphaplugin.h>
 #include <thread>
 
-#include "hypharunner/controller/connection.h"
+#include <hypha/plugin/connection.h>
+#include <hypha/plugin/hyphabaseplugin.h>
+#include <hypha/plugin/hyphareceiver.h>
+#include <hypha/plugin/hyphasender.h>
 
-class LocalConnection : public Connection {
+class LocalConnection : public hypha::plugin::Connection {
  public:
-  LocalConnection(std::string handlerId, std::string pluginId);
-  virtual bool connect();
-  virtual bool disconnect();
+  LocalConnection(std::string senderId, std::string receiverId);
+  bool connect(std::shared_ptr<Connection> connection) override;
+  bool disconnect() override;
 
-  void handlerMessage(std::string message);
-  void pluginMessage(std::string message);
+  virtual void sendMessage(std::string message) override;
 
   static std::string communicate(std::string id, std::string message);
 
  protected:
-  hypha::handler::HyphaHandler *handler = 0;
-  hypha::plugin::HyphaPlugin *plugin = 0;
-  std::thread *handlerThread = 0;
-  std::thread *pluginThread = 0;
+  hypha::plugin::HyphaSender *sender = nullptr;
+  hypha::plugin::HyphaReceiver *receiver = nullptr;
+  std::thread *senderThread = nullptr;
+  std::thread *receiverThread = nullptr;
 };
-
-#endif  // LOCALCONNECTION_H

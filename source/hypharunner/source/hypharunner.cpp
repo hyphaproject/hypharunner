@@ -1,5 +1,9 @@
 // Copyright (c) 2015-2016 Hypha
+
 #include "hypharunner/hypharunner.h"
+#include "hypharunner/controller/controller.h"
+#include "hypharunner/network/tcpserver.h"
+
 #include <chrono>
 #include <iostream>
 #include <thread>
@@ -15,28 +19,31 @@
 #include <sstream>
 #endif
 
-#include <Poco/Exception.h>
-#include <Poco/Util/HelpFormatter.h>
-#include <Poco/Util/ServerApplication.h>
 #include <hypha/core/database/database.h>
 #include <hypha/core/database/databasegenerator.h>
 #include <hypha/core/database/userdatabase.h>
 #include <hypha/core/settings/configgenerator.h>
 #include <hypha/core/settings/databasesettings.h>
 #include <hypha/core/settings/hyphasettings.h>
-#include <hypha/handler/handlerloader.h>
 #include <hypha/plugin/pluginloader.h>
+#include <hypha/plugin/pluginutil.h>
 #include <hypha/utils/logger.h>
 
-#include "hypharunner/controller/controller.h"
-#include "hypharunner/network/tcpserver.h"
+#include <Poco/Exception.h>
+#include <Poco/Util/HelpFormatter.h>
+#include <Poco/Util/ServerApplication.h>
 
 using namespace Poco::Util;
 using namespace hypha::plugin;
-using namespace hypha::handler;
 using namespace hypha::utils;
 using namespace hypha::settings;
 using namespace hypha::database;
+
+#ifdef __linux__
+std::string stdPluginsDir = "/usr/local/share/hypha/plugins";
+#else
+std::string stdPluginsDir = "../plugins";
+#endif
 
 void HyphaRunner::initialize(Application &self) {
   ServerApplication::initialize(self);
@@ -63,29 +70,15 @@ int HyphaRunner::main(const std::vector<std::string> &args) {
     Logger::info("Loading Database ...");
     UserDatabase::instance();
 
-    std::string stdHandlersDir;
-    std::string stdPluginsDir;
-#ifdef __linux__
-    stdHandlersDir = "/usr/local/lib/hyphahandlers";
-    stdPluginsDir = "/usr/local/lib/hyphaplugins";
-#else
-    stdHandlersDir = "../hyphahandlers";
-    stdPluginsDir = "../hyphaplugins";
-#endif
-
-    Logger::info("Loading Handler ...");
-    HandlerLoader::instance()->loadHandlers(
-        config().getString("handlersdir", stdHandlersDir));
     Logger::info("Loading Plugins ...");
     PluginLoader::instance()->loadPlugins(
         config().getString("pluginsdir", stdPluginsDir));
-    Logger::info("Init Handler ...");
-    Controller::instance()->loadHandler();
     Logger::info("Init Plugins ...");
     Controller::instance()->loadPlugins();
     Logger::info("Starting Threads ...");
-    Controller::instance()->startThreads();
     Controller::instance()->createConnections();
+    Controller::instance()->startThreads();
+
     TcpServer tcpServer;
     tcpServer.start();
 
@@ -134,12 +127,36 @@ void HyphaRunner::defineOptions(OptionSet &options) {
                         .argument("dir")
                         .callback(OptionCallback<HyphaRunner>(
                             this, &HyphaRunner::handleConfig)));
+  options.addOption(
+      Option("list", "lp", "list plugins, params are handler, actors, sensors")
+          .required(false)
+          .repeatable(false)
+          .argument("handler|actors|sensors|receiver|sender")
+          .callback(
+              OptionCallback<HyphaRunner>(this, &HyphaRunner::handleList)));
 }
 
 void HyphaRunner::handleHelp(const std::string &name,
                              const std::string &value) {
   _helpRequested = true;
   displayHelp();
+  stopOptionsProcessing();
+}
+
+void HyphaRunner::handleList(const std::string &name,
+                             const std::string &value) {
+  std::string pluginsDir = config().getString("pluginsdir", stdPluginsDir);
+  std::cout << value << " found in " << pluginsDir << std::endl;
+
+  for (hypha::plugin::HyphaBasePlugin *plugin :
+       PluginLoader::listPlugins(pluginsDir)) {
+    if (value == "actors" && !PluginUtil::isActor(plugin)) continue;
+    if (value == "sensors" && !PluginUtil::isSensor(plugin)) continue;
+    if (value == "handler" && !PluginUtil::isHandler(plugin)) continue;
+    if (value == "sender" && !PluginUtil::isSender(plugin)) continue;
+    if (value == "receiver" && !PluginUtil::isReceiver(plugin)) continue;
+    std::cout << "plugin: " << plugin->name() << std::endl;
+  }
   stopOptionsProcessing();
 }
 

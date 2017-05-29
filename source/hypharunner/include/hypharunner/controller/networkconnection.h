@@ -1,26 +1,25 @@
-// Copyright (c) 2015-2016 Hypha
-#ifndef NETWORKCONNECTION_H
-#define NETWORKCONNECTION_H
+// Copyright (c) 2015-2017 Hypha
+#pragma once
 
-#include <hypha/handler/hyphahandler.h>
-#include <hypha/plugin/hyphaplugin.h>
-#include "hypharunner/controller/connection.h"
+#include <hypha/plugin/connection.h>
+#include <hypha/plugin/hyphabaseplugin.h>
+#include <hypha/plugin/hyphareceiver.h>
+#include <hypha/plugin/hyphasender.h>
 
-class NetworkConnection : public Connection {
+class NetworkConnection : public hypha::plugin::Connection {
  public:
-  NetworkConnection(std::string handlerId, std::string pluginId);
-  virtual bool connect();
-  virtual bool disconnect();
-  void receiveMessage(std::string message);
+  NetworkConnection(std::string senderId, std::string receiverId);
+  virtual bool connect(std::shared_ptr<Connection> connection) override;
+  virtual bool disconnect() override;
+  virtual void sendMessage(std::string message) override;
   static std::string communicate(std::string id, std::string message);
+  virtual ~NetworkConnection() {}
 
  protected:
-  hypha::handler::HyphaHandler *handler;
-  hypha::plugin::HyphaPlugin *plugin;
-  std::string pluginId;
-  std::string handlerId;
+  hypha::plugin::HyphaSender *sender;
+  hypha::plugin::HyphaReceiver *receiver;
+  std::string receiverId;
+  std::string senderId;
   std::string host;
   std::string id;
 };
-
-#endif  // NETWORKCONNECTION_H

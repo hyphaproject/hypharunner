@@ -1,10 +1,14 @@
-// Copyright (c) 2015-2016 Hypha
+// Copyright (c) 2015-2017 Hypha
+
 #include "hypharunner/network/sendhandler.h"
+
+#include <hypha/plugin/hyphareceiver.h>
+#include <hypha/plugin/pluginloader.h>
+#include <hypha/plugin/pluginutil.h>
+#include <hypha/utils/logger.h>
+
 #include <Poco/Exception.h>
 #include <Poco/Net/HTMLForm.h>
-#include <hypha/handler/handlerloader.h>
-#include <hypha/plugin/pluginloader.h>
-#include <hypha/utils/logger.h>
 
 using namespace hypha::utils;
 
@@ -37,15 +41,15 @@ void SendHandler::handleRequest(Poco::Net::HTTPServerRequest &request,
     response.setContentType("text/html");
 
     std::ostream &ostr = response.send();
-    hypha::handler::HyphaHandler *handler =
-        hypha::handler::HandlerLoader::instance()->getHandlerInstance(id);
-    hypha::plugin::HyphaPlugin *plugin =
+    hypha::plugin::HyphaBasePlugin *plugin =
         hypha::plugin::PluginLoader::instance()->getPluginInstance(id);
-    if (handler) {
-      handler->receiveMessage(message);
-      ostr << handler->name() << "<br/> " << handler->getDescription();
-    } else if (plugin) {
-      plugin->receiveMessage(message);
+    if (plugin) {
+      if (hypha::plugin::PluginUtil::isReceiver(plugin)) {
+        hypha::plugin::HyphaReceiver *hr =
+            dynamic_cast<hypha::plugin::HyphaReceiver *>(plugin);
+        hr->receiveMessage(message);
+      }
+      ostr << plugin->name() << "<br/> " << plugin->getDescription();
     } else {
       ostr << "<html><head><title>HTTP Server powered by POCO C++ "
               "Libraries</title></head>";

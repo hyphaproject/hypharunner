@@ -1,10 +1,12 @@
-// Copyright (c) 2015-2016 Hypha
+// Copyright (c) 2015-2017 Hypha
+
 #include "hypharunner/network/communicatehandler.h"
-#include <Poco/Exception.h>
-#include <Poco/Net/HTMLForm.h>
-#include <hypha/handler/handlerloader.h>
+
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
+
+#include <Poco/Exception.h>
+#include <Poco/Net/HTMLForm.h>
 
 using namespace hypha::utils;
 
@@ -37,14 +39,10 @@ void CommunicateHandler::handleRequest(
     response.setContentType("text/json");
 
     std::ostream &ostr = response.send();
-    hypha::handler::HyphaHandler *handler =
-        hypha::handler::HandlerLoader::instance()->getHandlerInstance(id);
-    hypha::plugin::HyphaPlugin *plugin =
+    hypha::plugin::HyphaBasePlugin *plugin =
         hypha::plugin::PluginLoader::instance()->getPluginInstance(id);
     std::string returnStr;
-    if (handler) {
-      returnStr = handler->communicate(message);
-    } else if (plugin) {
+    if (plugin) {
       returnStr = plugin->communicate(message);
     } else {
       ostr << "{\"error\":true}";

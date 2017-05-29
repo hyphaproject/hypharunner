@@ -1,6 +1,7 @@
-// Copyright (c) 2015-2016 Hypha
+// Copyright (c) 2015-2017 Hypha
+
 #include "hypharunner/network/infohandler.h"
-#include <hypha/handler/handlerloader.h>
+
 #include <hypha/plugin/pluginloader.h>
 #include <hypha/utils/logger.h>
 
@@ -16,18 +17,14 @@ void InfoHandler::handleRequest(Poco::Net::HTTPServerRequest &request,
   std::string id = uri.substr(uri.find_last_of("/") + 1);
   Logger::info("id: " + id);
 
-  hypha::handler::HyphaHandler *handler =
-      hypha::handler::HandlerLoader::instance()->getHandlerInstance(id);
-  hypha::plugin::HyphaPlugin *plugin =
+  hypha::plugin::HyphaBasePlugin *plugin =
       hypha::plugin::PluginLoader::instance()->getPluginInstance(id);
 
   std::ostream &ostr = response.send();
   ostr << "<html><head><title>HTTP Server powered by POCO C++ "
           "Libraries</title></head>";
   ostr << "<body>";
-  if (handler) {
-    ostr << handler->name() << "<br/> " << handler->getDescription();
-  } else if (plugin) {
+  if (plugin) {
     ostr << plugin->name() << "<br/> " << plugin->getDescription();
   } else {
     ostr << "There is no information about this ID.";

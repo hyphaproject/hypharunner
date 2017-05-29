@@ -1,21 +1,27 @@
-// Copyright (c) 2015-2016 Hypha
+// Copyright (c) 2015-2017 Hypha
 
 #include "hypharunner/controller/controller.h"
-#include <hypha/controller/connection.h>
-#include <hypha/core/database/database.h>
-#include <hypha/handler/handlerloader.h>
-#include <hypha/plugin/pluginloader.h>
-#include <hypha/utils/logger.h>
-#include "hypharunner/controller/connection.h"
+#include "hypharunner/controller/connectionfactory.h"
+#include "hypharunner/controller/localconnection.h"
+#include "hypharunner/controller/networkconnection.h"
 
 #include <mutex>
 
+#include <hypha/controller/connection.h>
+#include <hypha/core/database/database.h>
+#include <hypha/core/settings/pluginsettings.h>
+#include <hypha/plugin/connection.h>
+#include <hypha/plugin/hyphasender.h>
+#include <hypha/plugin/pluginloader.h>
+#include <hypha/plugin/pluginutil.h>
+#include <hypha/utils/logger.h>
+
 #include <Poco/Data/RecordSet.h>
 #include <Poco/Data/Statement.h>
+#include <Poco/Net/DNS.h>
 
 using namespace hypha::utils;
 using namespace hypha::plugin;
-using namespace hypha::handler;
 using namespace hypha::database;
 
 Controller *Controller::singleton = nullptr;
@@ -36,10 +42,6 @@ Controller *Controller::instance() {
   return singleton;
 }
 
-void Controller::loadHandler() {
-  HandlerLoader::instance()->loadLocalInstances();
-}
-
 void Controller::loadPlugins() {
   PluginLoader::instance()->loadLocalInstances();
 }
@@ -49,10 +51,12 @@ void Controller::createConnections() {
   for (std::tuple<std::string, std::string, std::string> t :
        con.getConnections()) {
     try {
-      std::string handlerId = std::get<1>(t);
-      std::string pluginId = std::get<2>(t);
-      Connection *connection = Connection::factory(handlerId, pluginId);
-      connection->connect();
+      std::string senderId = std::get<1>(t);
+      std::string receiverId = std::get<2>(t);
+      std::shared_ptr<Connection> connection =
+          ConnectionFactory::factory(senderId, receiverId);
+      connections.push_back(connection);
+      connection->connect(connection);
     } catch (std::exception &ex) {
       Logger::error(ex.what());
     }
@@ -60,16 +64,27 @@ void Controller::createConnections() {
 }
 
 void Controller::startThreads() {
-  for (HyphaHandler *handler : HandlerLoader::instance()->getInstances()) {
-    Logger::info("start thread (h): " + handler->getId());
-    handler->start();
-  }
-  for (HyphaPlugin *plugin : PluginLoader::instance()->getInstances()) {
-    Logger::info("start thread (p): " + plugin->getId());
-    plugin->setCallMessageFunction(Connection::communicate);
+  for (HyphaBasePlugin *plugin : PluginLoader::instance()->getInstances()) {
+    Logger::info("start thread: " + plugin->getId());
+
     plugin->setup();
   }
-  for (HyphaPlugin *plugin : PluginLoader::instance()->getInstances()) {
+  for (HyphaBasePlugin *plugin : PluginLoader::instance()->getInstances()) {
     plugin->start();
   }
+}
+
+std::string Controller::communicate(std::string id, std::string message) {
+  HyphaBasePlugin *plugin = PluginLoader::instance()->getPluginInstance(id);
+  if (plugin) {
+    if (hypha::settings::PluginSettings::instance()->getHost(id) ==
+            Poco::Net::DNS::hostName() ||
+        hypha::settings::PluginSettings::instance()->getHost(id) ==
+            "localhost") {
+      return LocalConnection::communicate(id, message);
+    } else {
+      return NetworkConnection::communicate(id, message);
+    }
+  }
+  return "";
 }

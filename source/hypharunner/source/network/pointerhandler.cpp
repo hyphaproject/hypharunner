@@ -1,13 +1,13 @@
-// Copyright (c) 2016 Hypha
+// Copyright (c) 2016-2017 Hypha
 
 #include "hypharunner/network/pointerhandler.h"
+
 #include <hypha/core/cache/cache.h>
+#include <hypha/plugin/pluginloader.h>
+#include <hypha/utils/logger.h>
 
 #include <Poco/Exception.h>
 #include <Poco/Net/HTMLForm.h>
-#include <hypha/handler/handlerloader.h>
-#include <hypha/plugin/pluginloader.h>
-#include <hypha/utils/logger.h>
 
 using namespace hypha::utils;
 

@@ -1,5 +1,13 @@
-// Copyright (c) 2015-2016 Hypha
+// Copyright (c) 2015-2017 Hypha
+
+#include "hypharunner/controller/networkconnection.h"
+
 #include <iostream>
+
+#include <hypha/core/settings/pluginsettings.h>
+#include <hypha/plugin/hyphasender.h>
+#include <hypha/plugin/pluginloader.h>
+#include <hypha/utils/logger.h>
 
 #include <Poco/Net/DNS.h>
 #include <Poco/Net/HTTPClientSession.h>
@@ -10,44 +18,33 @@
 #include <Poco/Net/StreamSocket.h>
 #include <Poco/StreamCopier.h>
 
-#include <hypha/core/settings/handlersettings.h>
-#include <hypha/core/settings/pluginsettings.h>
-#include <hypha/handler/handlerloader.h>
-#include <hypha/plugin/pluginloader.h>
-#include <hypha/utils/logger.h>
-#include "hypharunner/controller/networkconnection.h"
-
 using namespace hypha::utils;
 using namespace hypha::plugin;
-using namespace hypha::handler;
 using namespace hypha::settings;
 
-NetworkConnection::NetworkConnection(std::string handlerId,
-                                     std::string pluginId) {
-  this->handler = HandlerLoader::instance()->getHandlerInstance(handlerId);
-  this->plugin = PluginLoader::instance()->getPluginInstance(pluginId);
-  this->pluginId = pluginId;
-  this->handlerId = handlerId;
+NetworkConnection::NetworkConnection(std::string senderId,
+                                     std::string receiverId)
+    : Connection(senderId, receiverId) {
+  this->sender = dynamic_cast<HyphaSender *>(
+      PluginLoader::instance()->getPluginInstance(senderId));
+  this->receiver = dynamic_cast<HyphaReceiver *>(
+      PluginLoader::instance()->getPluginInstance(receiverId));
+  this->senderId = receiverId;
+  this->receiverId = senderId;
 }
 
-bool NetworkConnection::connect() {
-  if (handler &&
-      (HandlerSettings::instance()->getHost(handlerId) ==
+bool NetworkConnection::connect(std::shared_ptr<Connection> connection) {
+  if (sender &&
+      (PluginSettings::instance()->getHost(senderId) ==
            Poco::Net::DNS::hostName() ||
-       HandlerSettings::instance()->getHost(handlerId) == "localhost")) {
-    Logger::info("connection (h+p): " + handler->getId() + " + " + pluginId);
-    handler->connect(boost::bind(&NetworkConnection::receiveMessage, this, _1));
-    this->id = pluginId;
+       PluginSettings::instance()->getHost(senderId) == "localhost")) {
+    Logger::info("connection (s+r): " + senderId + " + " + receiverId);
+    ((HyphaSender *)sender)->addListener(connection);
+    //((HyphaSender *)sender)
+    //    ->connect(boost::bind(&NetworkConnection::receiveMessage, this, _1));
+    this->id = receiverId;
     this->host = PluginSettings::instance()->getHost(id);
-    return true;
-  } else if (plugin &&
-             (PluginSettings::instance()->getHost(pluginId) ==
-                  Poco::Net::DNS::hostName() ||
-              PluginSettings::instance()->getHost(pluginId) == "localhost")) {
-    Logger::info("connection (p+h):" + plugin->getId() + "+" + handlerId);
-    plugin->connect(boost::bind(&NetworkConnection::receiveMessage, this, _1));
-    this->id = handlerId;
-    this->host = HandlerSettings::instance()->getHost(id);
+    sender->setCallMessageFunction(NetworkConnection::communicate);
     return true;
   } else {
     return false;
@@ -56,7 +53,7 @@ bool NetworkConnection::connect() {
 
 bool NetworkConnection::disconnect() { return false; }
 
-void NetworkConnection::receiveMessage(std::string message) {
+void NetworkConnection::sendMessage(std::string message) {
   try {
     Poco::Net::HTTPClientSession session(this->host, 47965);
     session.setKeepAlive(false);
@@ -86,11 +83,7 @@ std::string NetworkConnection::communicate(std::string id,
                                            std::string message) {
   try {
     std::string host;
-    HyphaHandler *handler = HandlerLoader::instance()->getHandlerInstance(id);
-    if (handler) {
-      host = handler->getHost();
-    }
-    HyphaPlugin *plugin = PluginLoader::instance()->getPluginInstance(id);
+    HyphaBasePlugin *plugin = PluginLoader::instance()->getPluginInstance(id);
     if (plugin) {
       host = plugin->getHost();
     }
@@ -121,5 +114,5 @@ std::string NetworkConnection::communicate(std::string id,
     Logger::error(e.displayText());
   }
 
-  return "{\"error\":true";
+  return "{\"error\":true}";
 }

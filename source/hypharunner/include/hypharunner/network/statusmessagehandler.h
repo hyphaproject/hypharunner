@@ -1,6 +1,5 @@
 // Copyright (c) 2015-2016 Hypha
-#ifndef STATUSMESSAGEHANDLER_H
-#define STATUSMESSAGEHANDLER_H
+#pragma once
 
 #include <Poco/Net/HTTPRequestHandler.h>
 #include <Poco/Net/HTTPServerRequest.h>
@@ -11,5 +10,3 @@ class StatusMessageHandler : public Poco::Net::HTTPRequestHandler {
   void handleRequest(Poco::Net::HTTPServerRequest &request,
                      Poco::Net::HTTPServerResponse &response);
 };
-
-#endif  // STATUSMESSAGEHANDLER_H

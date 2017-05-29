@@ -1,6 +1,5 @@
 // Copyright (c) 2015-2016 Hypha
-#ifndef TCPSERVER_H
-#define TCPSERVER_H
+#pragma once
 
 #include <Poco/Net/HTTPServer.h>
 
@@ -15,5 +14,3 @@ class TcpServer {
  protected:
   Poco::Net::HTTPServer *srv;
 };
-
-#endif  // TCPSERVER_H
