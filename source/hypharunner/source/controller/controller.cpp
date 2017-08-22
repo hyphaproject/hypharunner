@@ -29,6 +29,7 @@ Controller *Controller::singleton = nullptr;
 Controller::Controller() {
     namesystem = std::shared_ptr<hypha::utils::NameSystem>();
     namesystem->start();
+    NetworkConnection::setNameSystem(namesystem);
 }
 
 Controller::~Controller() {
@@ -59,7 +60,7 @@ void Controller::createConnections() {
       std::string senderId = std::get<1>(t);
       std::string receiverId = std::get<2>(t);
       std::shared_ptr<Connection> connection =
-          ConnectionFactory::factory(namesystem, senderId, receiverId);
+          ConnectionFactory::factory(senderId, receiverId);
       connections.push_back(connection);
       connection->connect(connection);
     } catch (std::exception &ex) {

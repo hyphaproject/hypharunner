@@ -13,7 +13,6 @@
 class ConnectionFactory {
  public:
   ~ConnectionFactory();
-  static std::shared_ptr<hypha::plugin::Connection> factory(std::shared_ptr<hypha::utils::NameSystem> namesystem,
-      std::string senderId, std::string receiverId);
+  static std::shared_ptr<hypha::plugin::Connection> factory(std::string senderId, std::string receiverId);
   static std::string communicate(std::string id, std::string message);
 };

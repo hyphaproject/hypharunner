@@ -15,7 +15,7 @@
 using namespace hypha::plugin;
 using namespace hypha::settings;
 
-std::shared_ptr<Connection> ConnectionFactory::factory(std::shared_ptr<hypha::utils::NameSystem> namesystem, std::string senderId,
+std::shared_ptr<Connection> ConnectionFactory::factory(std::string senderId,
                                                        std::string receiverId) {
   if ((PluginSettings::instance()->getHost(receiverId) ==
            Poco::Net::DNS::hostName() ||
@@ -25,6 +25,6 @@ std::shared_ptr<Connection> ConnectionFactory::factory(std::shared_ptr<hypha::ut
        PluginSettings::instance()->getHost(senderId) == "localhost")) {
     return std::make_shared<LocalConnection>(senderId, receiverId);
   } else {
-    return std::make_shared<NetworkConnection>(namesystem, senderId, receiverId);
+    return std::make_shared<NetworkConnection>(senderId, receiverId);
   }
 }

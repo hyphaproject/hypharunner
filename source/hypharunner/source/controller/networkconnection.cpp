@@ -22,10 +22,11 @@ using namespace hypha::utils;
 using namespace hypha::plugin;
 using namespace hypha::settings;
 
-NetworkConnection::NetworkConnection(std::shared_ptr<NameSystem> namesystem, std::string senderId,
+std::shared_ptr<hypha::utils::NameSystem> NetworkConnection::namesystem = nullptr;
+
+NetworkConnection::NetworkConnection(std::string senderId,
                                      std::string receiverId)
     : Connection(senderId, receiverId) {
-    this->namesystem = namesystem;
   this->sender = dynamic_cast<HyphaSender *>(
       PluginLoader::instance()->getPluginInstance(senderId));
   this->receiver = dynamic_cast<HyphaReceiver *>(
@@ -86,7 +87,10 @@ std::string NetworkConnection::communicate(std::string id,
     std::string host;
     HyphaBasePlugin *plugin = PluginLoader::instance()->getPluginInstance(id);
     if (plugin) {
-      host = plugin->getHost();
+        if(NetworkConnection::namesystem)
+            host = NetworkConnection::namesystem->toIP(plugin->getHost());
+        else
+          host = plugin->getHost();
     }
 
     Poco::Net::HTTPClientSession session(host, 47965);
@@ -115,5 +119,10 @@ std::string NetworkConnection::communicate(std::string id,
     Logger::error(e.displayText());
   }
 
-  return "{\"error\":true}";
+    return "{\"error\":true}";
+}
+
+void NetworkConnection::setNameSystem(std::shared_ptr<NameSystem> namesystem)
+{
+    NetworkConnection::namesystem = namesystem;
 }
