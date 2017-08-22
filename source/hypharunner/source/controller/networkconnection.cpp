@@ -22,9 +22,10 @@ using namespace hypha::utils;
 using namespace hypha::plugin;
 using namespace hypha::settings;
 
-NetworkConnection::NetworkConnection(std::string senderId,
+NetworkConnection::NetworkConnection(std::shared_ptr<NameSystem> namesystem, std::string senderId,
                                      std::string receiverId)
     : Connection(senderId, receiverId) {
+    this->namesystem = namesystem;
   this->sender = dynamic_cast<HyphaSender *>(
       PluginLoader::instance()->getPluginInstance(senderId));
   this->receiver = dynamic_cast<HyphaReceiver *>(

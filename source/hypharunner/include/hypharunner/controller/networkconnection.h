@@ -5,10 +5,11 @@
 #include <hypha/plugin/hyphabaseplugin.h>
 #include <hypha/plugin/hyphareceiver.h>
 #include <hypha/plugin/hyphasender.h>
+#include <hypha/utils/namesystem.h>
 
 class NetworkConnection : public hypha::plugin::Connection {
  public:
-  NetworkConnection(std::string senderId, std::string receiverId);
+  NetworkConnection(std::shared_ptr<hypha::utils::NameSystem> namesystem, std::string senderId, std::string receiverId);
   virtual bool connect(std::shared_ptr<Connection> connection) override;
   virtual bool disconnect() override;
   virtual void sendMessage(std::string message) override;
@@ -22,4 +23,5 @@ class NetworkConnection : public hypha::plugin::Connection {
   std::string senderId;
   std::string host;
   std::string id;
+  std::shared_ptr<hypha::utils::NameSystem> namesystem;
 };

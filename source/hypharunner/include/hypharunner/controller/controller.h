@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <hypha/plugin/connection.h>
+#include <hypha/utils/namesystem.h>
 
 class Controller {
  public:
@@ -20,6 +21,7 @@ class Controller {
   explicit Controller();
   ~Controller();
 
+  std::shared_ptr<hypha::utils::NameSystem> namesystem;
   std::vector<std::shared_ptr<hypha::plugin::Connection>> connections;
 
   static Controller *singleton;

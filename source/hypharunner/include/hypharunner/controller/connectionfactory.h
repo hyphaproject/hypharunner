@@ -5,6 +5,7 @@
 #include <string>
 
 #include <hypha/plugin/connection.h>
+#include <hypha/utils/namesystem.h>
 
 /**
  * @brief The Connection class
@@ -12,7 +13,7 @@
 class ConnectionFactory {
  public:
   ~ConnectionFactory();
-  static std::shared_ptr<hypha::plugin::Connection> factory(
+  static std::shared_ptr<hypha::plugin::Connection> factory(std::shared_ptr<hypha::utils::NameSystem> namesystem,
       std::string senderId, std::string receiverId);
   static std::string communicate(std::string id, std::string message);
 };

@@ -26,9 +26,14 @@ using namespace hypha::database;
 
 Controller *Controller::singleton = nullptr;
 
-Controller::Controller() {}
+Controller::Controller() {
+    namesystem = std::shared_ptr<hypha::utils::NameSystem>();
+    namesystem->start();
+}
 
-Controller::~Controller() {}
+Controller::~Controller() {
+    namesystem->stop();
+}
 
 Controller *Controller::instance() {
   static std::mutex mutex;
@@ -54,7 +59,7 @@ void Controller::createConnections() {
       std::string senderId = std::get<1>(t);
       std::string receiverId = std::get<2>(t);
       std::shared_ptr<Connection> connection =
-          ConnectionFactory::factory(senderId, receiverId);
+          ConnectionFactory::factory(namesystem, senderId, receiverId);
       connections.push_back(connection);
       connection->connect(connection);
     } catch (std::exception &ex) {
